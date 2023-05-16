@@ -13,7 +13,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import PitelSDK from 'pitel-sdk-webrtc';
 import {
   mediaDevices,
   MediaStream,
@@ -23,8 +22,8 @@ import {
   RTCPeerConnection,
   RTCSessionDescription,
 } from 'pitel-react-native-webrtc';
-import { pitelRegister } from './libs/pitel_register';
-import { pitelCallOut } from './libs/pitel_call_out';
+import { pitelRegister } from './services/pitel_register';
+import { pitelCallOut } from './services/pitel_call_out';
 
 
 window.RTCPeerConnection = window.RTCPeerConnection || RTCPeerConnection;
@@ -39,7 +38,7 @@ window.navigator.mediaDevices = window.navigator.mediaDevices || mediaDevices;
 window.navigator.getUserMedia =
   window.navigator.getUserMedia || mediaDevices.getUserMedia;
 
-function App() {
+export const PitelDialScreen = () => {
   const [pitelSDK, setPitelSDK] = useState();
 
   useEffect(() => {

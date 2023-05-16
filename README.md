@@ -29,3 +29,5 @@ MIT
 ---
 
 Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+
+git commit --no-verify -m "Commit message"
