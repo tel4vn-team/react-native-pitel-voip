@@ -1,7 +1,7 @@
 module.exports = {
-    project: {
-        ios: {
-            sourceDir: './ios',
-        },
+  project: {
+    ios: {
+      sourceDir: './ios',
     },
+  },
 };
