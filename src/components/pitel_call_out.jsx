@@ -6,12 +6,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import {
   mediaDevices,
@@ -22,9 +17,8 @@ import {
   RTCPeerConnection,
   RTCSessionDescription,
 } from 'pitel-react-native-webrtc';
-import { pitelRegister } from './services/pitel_register';
-import { pitelCallOut } from './services/pitel_call_out';
-
+import { pitelRegister } from '../services/pitel_register';
+import { pitelCallOut } from '../services/pitel_call_out';
 
 window.RTCPeerConnection = window.RTCPeerConnection || RTCPeerConnection;
 window.RTCIceCandidate = window.RTCIceCandidate || RTCIceCandidate;
@@ -38,47 +32,53 @@ window.navigator.mediaDevices = window.navigator.mediaDevices || mediaDevices;
 window.navigator.getUserMedia =
   window.navigator.getUserMedia || mediaDevices.getUserMedia;
 
-export const PitelDialScreen = () => {
-  const [pitelSDK, setPitelSDK] = useState();
-
+export const PitelCallOut = ({
+  sdkOptions,
+  pitelSDK,
+  setPitelSDK,
+  handleCallOut,
+  style,
+  btnTitle,
+  callToNumber,
+}) => {
   useEffect(() => {
     const pitelSDKRes = registerExtension();
     setPitelSDK(pitelSDKRes);
   }, []);
 
-  const sdkOptions = {
-    sipOnly: true,
-    sipDomain: 'mobile.tel4vn.com:50061',
-    wsServer: 'wss://wss-mobile.tel4vn.com:7444',
-    sipPassword: 'Tel4vn.com123@',
-    debug: true,
-  };
-
   const registerExtension = () => {
     pitelRegister(sdkOptions);
-  }
+  };
   const callOutgoing = () => {
-    const pitelSDKRes = pitelCallOut(sdkOptions);
+    handleCallOut();
+    const pitelSDKRes = pitelCallOut(sdkOptions, callToNumber);
     setPitelSDK(pitelSDKRes);
-  }
+  };
   const hangup = () => {
     pitelSDK.hangup();
-  }
+  };
 
   const handleMute = () => {
     pitelSDK.mute();
-  }
+  };
   const handleUnMute = () => {
     pitelSDK.unmute();
-  }
-  const speakerOn = () => {
-  }
-  const speakerOff = () => {
-  }
+  };
+  const speakerOn = () => {};
+  const speakerOff = () => {};
 
   return (
-    <View style={styles.container}>
-      <Text>Pushkit, Callkit</Text>
+    <TouchableOpacity
+      style={[styles.btnCall, { ...style }]}
+      onPress={callOutgoing}
+    >
+      <Text>{btnTitle}</Text>
+    </TouchableOpacity>
+  );
+};
+
+{
+  /* <Text>Pushkit, Callkit</Text>
       <TouchableOpacity style={styles.btnCall} onPress={registerExtension}>
         <Text>Register</Text>
       </TouchableOpacity>
@@ -99,26 +99,21 @@ export const PitelDialScreen = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.btnCall} onPress={speakerOff}>
         <Text>Speaker off</Text>
-      </TouchableOpacity>
-    </View>
-  );
+      </TouchableOpacity> */
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   btnCall: {
     height: 40,
     width: 200,
-    backgroundColor: "cyan",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'cyan',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
-  }
+  },
 });
-
-export default App;

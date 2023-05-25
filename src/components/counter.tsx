@@ -3,7 +3,7 @@ import { Button, StyleSheet, Text, View } from 'react-native';
 
 export const addOne = (input: number) => input + 1;
 
-export const Counter = () => {
+export const Counter: React.FC = () => {
   const [count, setCount] = React.useState(0);
 
   return (

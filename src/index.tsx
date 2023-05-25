@@ -1,7 +1,6 @@
-// export function multiply(a: number, b: number): Promise<number> {
-//   return Promise.resolve(a * b);
-// }
 import { Counter } from './components/counter';
-import {PitelDialScreen} from './screens/pitel_dial_screen';
+import { PitelCallOut } from './components/pitel_call_out';
+import { PitelCallKit } from './screens/call_screen';
+import { pitelRegister } from './services/pitel_register';
 
-export { Counter, PitelDialScreen };
+export { Counter, PitelCallOut, PitelCallKit, pitelRegister };
