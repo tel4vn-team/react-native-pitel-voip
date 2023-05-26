@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import InCallManager from 'react-native-incall-manager';
 import styles from './styles';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
@@ -7,11 +8,13 @@ import { IconButton } from '../../components/icon_button';
 import MicroOn from '../../assets/svgs/mic_on.svg';
 import MicroOff from '../../assets/svgs/mic_off.svg';
 import SpeakerHigh from '../../assets/svgs/speaker_high.svg';
+import SpeakerLow from '../../assets/svgs/speaker_low.svg';
 import Hangup from '../../assets/svgs/hangup.svg';
 
 export const PitelCallKit = ({
   pitelSDK,
-  microStatus,
+  microState,
+  speakerState,
   onHangup,
   onMicro,
   onSpeaker,
@@ -28,11 +31,11 @@ export const PitelCallKit = ({
       <View style={styles.groupBtnAction}>
         <View style={styles.advancedBtnGroup}>
           <IconTextButton
-            icon={microStatus ? <MicroOff /> : <MicroOn />}
+            icon={microState ? <MicroOff /> : <MicroOn />}
             title={'Mute'}
             onPress={() => {
               onMicro();
-              if (microStatus) {
+              if (microState) {
                 pitelSDK.unmute();
               } else {
                 pitelSDK.mute();
@@ -40,12 +43,25 @@ export const PitelCallKit = ({
             }}
           />
           <IconTextButton
-            icon={<SpeakerHigh />}
+            icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
             title={'Speaker'}
-            onPress={onSpeaker}
+            onPress={() => {
+              onSpeaker();
+              if (speakerState) {
+                InCallManager.setSpeakerphoneOn(true);
+              } else {
+                InCallManager.setSpeakerphoneOn(false);
+              }
+            }}
           />
         </View>
-        <IconButton icon={<Hangup />} onPress={onHangup} />
+        <IconButton
+          icon={<Hangup />}
+          onPress={() => {
+            InCallManager.stop();
+            onHangup();
+          }}
+        />
       </View>
     </View>
   );

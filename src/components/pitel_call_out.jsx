@@ -17,6 +17,8 @@ import {
   RTCPeerConnection,
   RTCSessionDescription,
 } from 'pitel-react-native-webrtc';
+import InCallManager from 'react-native-incall-manager';
+
 import { pitelRegister } from '../services/pitel_register';
 import { pitelCallOut } from '../services/pitel_call_out';
 
@@ -51,6 +53,7 @@ export const PitelCallOut = ({
     pitelRegister(sdkOptions);
   };
   const callOutgoing = () => {
+    InCallManager.start({ media: 'audio' });
     handleCallOut();
     const pitelSDKRes = pitelCallOut({
       sdkOptions: sdkOptions,
