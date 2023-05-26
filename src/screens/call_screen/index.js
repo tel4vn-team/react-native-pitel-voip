@@ -9,7 +9,13 @@ import MicroOff from '../../assets/svgs/mic_off.svg';
 import SpeakerHigh from '../../assets/svgs/speaker_high.svg';
 import Hangup from '../../assets/svgs/hangup.svg';
 
-export const PitelCallKit = ({ pitelSDK, onHangup, onMicro, onSpeaker }) => {
+export const PitelCallKit = ({
+  pitelSDK,
+  microStatus,
+  onHangup,
+  onMicro,
+  onSpeaker,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
@@ -21,7 +27,18 @@ export const PitelCallKit = ({ pitelSDK, onHangup, onMicro, onSpeaker }) => {
       </View>
       <View style={styles.groupBtnAction}>
         <View style={styles.advancedBtnGroup}>
-          <IconTextButton icon={<MicroOn />} title={'Mute'} onPress={onMicro} />
+          <IconTextButton
+            icon={microStatus ? <MicroOff /> : <MicroOn />}
+            title={'Mute'}
+            onPress={() => {
+              onMicro();
+              if (microStatus) {
+                pitelSDK.unmute();
+              } else {
+                pitelSDK.mute();
+              }
+            }}
+          />
           <IconTextButton
             icon={<SpeakerHigh />}
             title={'Speaker'}

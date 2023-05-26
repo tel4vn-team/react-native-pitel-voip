@@ -40,6 +40,7 @@ export const PitelCallOut = ({
   style,
   btnTitle,
   callToNumber,
+  onHangup,
 }) => {
   useEffect(() => {
     const pitelSDKRes = registerExtension();
@@ -51,21 +52,13 @@ export const PitelCallOut = ({
   };
   const callOutgoing = () => {
     handleCallOut();
-    const pitelSDKRes = pitelCallOut(sdkOptions, callToNumber);
+    const pitelSDKRes = pitelCallOut({
+      sdkOptions: sdkOptions,
+      callToNumber: callToNumber,
+      onHangup: onHangup,
+    });
     setPitelSDK(pitelSDKRes);
   };
-  const hangup = () => {
-    pitelSDK.hangup();
-  };
-
-  const handleMute = () => {
-    pitelSDK.mute();
-  };
-  const handleUnMute = () => {
-    pitelSDK.unmute();
-  };
-  const speakerOn = () => {};
-  const speakerOff = () => {};
 
   return (
     <TouchableOpacity

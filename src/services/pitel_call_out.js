@@ -1,6 +1,6 @@
 import PitelSDK from 'pitel-sdk-webrtc';
 
-export const pitelCallOut = (sdkOptions, callToNumber) => {
+export const pitelCallOut = ({ sdkOptions, callToNumber, onHangup }) => {
   var isOnCall = false;
   const sdkDelegates = {
     onRegistered() {
@@ -22,6 +22,7 @@ export const pitelCallOut = (sdkOptions, callToNumber) => {
     },
     onCallHangup() {
       isOnCall = false;
+      onHangup();
     },
     onCallHold() {},
   };
