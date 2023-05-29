@@ -1,6 +1,6 @@
 {
   "name": "react-native-pitel-voip",
-  "version": "0.1.0",
+  "version": "0.0.5",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -54,6 +54,7 @@
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
     "@react-native-community/eslint-config": "^3.0.2",
+    "@react-native-community/slider": "^4.4.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
@@ -77,8 +78,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*",
-    "react-native-svg": "^13.9.0"
+    "react-native": "*"
   },
   "engines": {
     "node": ">= 16.0.0"

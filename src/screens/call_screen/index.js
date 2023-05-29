@@ -48,9 +48,9 @@ export const PitelCallKit = ({
             onPress={() => {
               onSpeaker();
               if (speakerState) {
-                InCallManager.setSpeakerphoneOn(true);
-              } else {
                 InCallManager.setSpeakerphoneOn(false);
+              } else {
+                InCallManager.setSpeakerphoneOn(true);
               }
             }}
           />

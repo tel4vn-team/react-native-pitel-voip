@@ -38,6 +38,10 @@ export const PitelCallOut = ({
   sdkOptions,
   pitelSDK,
   setPitelSDK,
+
+  callState,
+  setCallState,
+
   handleCallOut,
   style,
   btnTitle,
@@ -45,13 +49,10 @@ export const PitelCallOut = ({
   onHangup,
 }) => {
   useEffect(() => {
-    const pitelSDKRes = registerExtension();
+    const pitelSDKRes = pitelRegister(sdkOptions, setCallState);
     setPitelSDK(pitelSDKRes);
   }, []);
 
-  const registerExtension = () => {
-    pitelRegister(sdkOptions);
-  };
   const callOutgoing = () => {
     InCallManager.start({ media: 'audio' });
     handleCallOut();
@@ -73,30 +74,6 @@ export const PitelCallOut = ({
   );
 };
 
-{
-  /* <Text>Pushkit, Callkit</Text>
-      <TouchableOpacity style={styles.btnCall} onPress={registerExtension}>
-        <Text>Register</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={callOutgoing}>
-        <Text>Call out</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={hangup}>
-        <Text>Hand up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={handleMute}>
-        <Text>Mute</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={handleUnMute}>
-        <Text>Unmute</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={speakerOn}>
-        <Text>Speaker on</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.btnCall} onPress={speakerOff}>
-        <Text>Speaker off</Text>
-      </TouchableOpacity> */
-}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
