@@ -37,19 +37,13 @@ window.navigator.getUserMedia =
 export const PitelCallOut = ({
   sdkOptions,
   pitelSDK,
-  setPitelSDK,
-  callOut,
-  setCallState,
-  handleCallOut,
   style,
   btnTitle,
   callToNumber,
-  onHangup,
 }) => {
   const callOutgoing = () => {
     InCallManager.start({ media: 'audio' });
     pitelSDK.call(callToNumber);
-    handleCallOut();
   };
 
   return (

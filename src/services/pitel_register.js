@@ -1,6 +1,10 @@
 import PitelSDK from 'pitel-sdk-webrtc';
 
-export const pitelRegister = ({ sdkOptions, setCallState }) => {
+export const pitelRegister = ({
+  sdkOptions,
+  setCallState,
+  setReceivedPhoneNumber,
+}) => {
   const sdkDelegates = {
     onRegistered() {
       setCallState('REGISTER');
@@ -12,6 +16,7 @@ export const pitelRegister = ({ sdkOptions, setCallState }) => {
       setCallState('CALL_CREATED');
     },
     onCallReceived(remoteNumber) {
+      setReceivedPhoneNumber(remoteNumber);
       setCallState('CALL_RECEIVED');
     },
     onCallAnswered() {

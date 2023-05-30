@@ -15,16 +15,20 @@ export const PitelCallKit = ({
   pitelSDK,
   microState,
   speakerState,
+
   onHangup,
   onMicro,
   onSpeaker,
+
+  phoneNumber,
+  direction,
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
-        <Text style={styles.txtDirection}>Outgoing...</Text>
+        <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
-          <Text style={styles.txtPhoneNumber}>104</Text>
+          <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
           <Text style={styles.txtTimer}>00:10</Text>
         </View>
       </View>
