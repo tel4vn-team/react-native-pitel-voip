@@ -40,10 +40,37 @@ export const PitelCallOut = ({
   style,
   btnTitle,
   callToNumber,
-  handleCallOut,
+
+  onReceived,
+  onHangup,
+  onCreated,
+  setCallState,
+  callState,
 }) => {
+  const [isCallOut, setIsCallOut] = useState(false);
+
+  useEffect(() => {
+    console.log('======callState================', callState);
+
+    switch (callState) {
+      case 'CALL_RECEIVED':
+        setIsCallOut(false);
+        onReceived();
+        break;
+      case 'CALL_HANGUP':
+        onHangup();
+        setCallState('REGISTER');
+        break;
+      case 'CALL_CREATED':
+        if (isCallOut) {
+          onCreated();
+        }
+        break;
+    }
+  }, [pitelSDK, callState, isCallOut]);
+
   const callOutgoing = () => {
-    handleCallOut();
+    setIsCallOut(true);
     InCallManager.start({ media: 'audio' });
     pitelSDK.call(callToNumber);
   };
