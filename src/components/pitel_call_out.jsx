@@ -40,8 +40,10 @@ export const PitelCallOut = ({
   style,
   btnTitle,
   callToNumber,
+  handleCallOut,
 }) => {
   const callOutgoing = () => {
+    handleCallOut();
     InCallManager.start({ media: 'audio' });
     pitelSDK.call(callToNumber);
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import styles from './styles';
@@ -10,6 +10,7 @@ import MicroOff from '../../assets/svgs/mic_off.svg';
 import SpeakerHigh from '../../assets/svgs/speaker_high.svg';
 import SpeakerLow from '../../assets/svgs/speaker_low.svg';
 import Hangup from '../../assets/svgs/hangup.svg';
+import Call from '../../assets/svgs/call.svg';
 
 export const PitelCallKit = ({
   pitelSDK,
@@ -22,7 +23,10 @@ export const PitelCallKit = ({
 
   phoneNumber,
   direction,
+  callState,
 }) => {
+  const [acceptCall, setAcceptCall] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
@@ -32,41 +36,62 @@ export const PitelCallKit = ({
           <Text style={styles.txtTimer}>00:10</Text>
         </View>
       </View>
-      <View style={styles.groupBtnAction}>
-        <View style={styles.advancedBtnGroup}>
-          <IconTextButton
-            icon={microState ? <MicroOff /> : <MicroOn />}
-            title={'Mute'}
+      {callState === 'CALL_RECEIVED' && !acceptCall ? (
+        <View style={styles.incomingCall}>
+          <IconButton
+            icon={<Hangup />}
             onPress={() => {
-              onMicro();
-              if (microState) {
-                pitelSDK.unmute();
-              } else {
-                pitelSDK.mute();
-              }
+              InCallManager.stop();
+              onHangup();
+              setAcceptCall(false);
             }}
           />
-          <IconTextButton
-            icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
-            title={'Speaker'}
+          <IconButton
+            icon={<Call />}
+            style={styles.acceptCall}
             onPress={() => {
-              onSpeaker();
-              if (speakerState) {
-                InCallManager.setSpeakerphoneOn(false);
-              } else {
-                InCallManager.setSpeakerphoneOn(true);
-              }
+              pitelSDK.accept();
+              setAcceptCall(true);
             }}
           />
         </View>
-        <IconButton
-          icon={<Hangup />}
-          onPress={() => {
-            InCallManager.stop();
-            onHangup();
-          }}
-        />
-      </View>
+      ) : (
+        <View style={styles.groupBtnAction}>
+          <View style={styles.advancedBtnGroup}>
+            <IconTextButton
+              icon={microState ? <MicroOff /> : <MicroOn />}
+              title={'Mute'}
+              onPress={() => {
+                onMicro();
+                if (microState) {
+                  pitelSDK.unmute();
+                } else {
+                  pitelSDK.mute();
+                }
+              }}
+            />
+            <IconTextButton
+              icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
+              title={'Speaker'}
+              onPress={() => {
+                onSpeaker();
+                if (speakerState) {
+                  InCallManager.setSpeakerphoneOn(false);
+                } else {
+                  InCallManager.setSpeakerphoneOn(true);
+                }
+              }}
+            />
+          </View>
+          <IconButton
+            icon={<Hangup />}
+            onPress={() => {
+              InCallManager.stop();
+              onHangup();
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 };

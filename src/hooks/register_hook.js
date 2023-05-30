@@ -5,6 +5,7 @@ export const useRegister = ({ sdkOptions }) => {
   const [callState, setCallState] = useState('');
   const [pitelSDK, setPitelSDK] = useState();
   const [receivedPhoneNumber, setReceivedPhoneNumber] = useState('');
+  const [isCallOut, setIsCallOut] = useState(false);
 
   const registerFunc = () => {
     const pitelSDKRes = pitelRegister({
@@ -20,11 +21,12 @@ export const useRegister = ({ sdkOptions }) => {
     callState,
     pitelSDK,
     receivedPhoneNumber,
+    isCallOut,
 
     // setState
     setCallState,
     setPitelSDK,
-
     registerFunc,
+    setIsCallOut,
   };
 };
