@@ -1,6 +1,6 @@
 import PitelSDK from 'pitel-sdk-webrtc';
 
-export const pitelRegister = (sdkOptions, setCallState) => {
+export const pitelRegister = ({ sdkOptions, setCallState }) => {
   const sdkDelegates = {
     onRegistered() {
       setCallState('REGISTER');

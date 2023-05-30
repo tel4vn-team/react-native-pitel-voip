@@ -20,7 +20,6 @@ import {
 import InCallManager from 'react-native-incall-manager';
 
 import { pitelRegister } from '../services/pitel_register';
-import { pitelCallOut } from '../services/pitel_call_out';
 import { useRegister } from '../hooks/register_hook';
 
 window.RTCPeerConnection = window.RTCPeerConnection || RTCPeerConnection;
@@ -37,23 +36,20 @@ window.navigator.getUserMedia =
 
 export const PitelCallOut = ({
   sdkOptions,
+  pitelSDK,
+  setPitelSDK,
+  callOut,
+  setCallState,
   handleCallOut,
   style,
   btnTitle,
   callToNumber,
   onHangup,
 }) => {
-  const { setPitelSDK } = useRegister(sdkOptions);
-
   const callOutgoing = () => {
     InCallManager.start({ media: 'audio' });
+    pitelSDK.call(callToNumber);
     handleCallOut();
-    const pitelSDKRes = pitelCallOut({
-      sdkOptions: sdkOptions,
-      callToNumber: callToNumber,
-      onHangup: onHangup,
-    });
-    setPitelSDK(pitelSDKRes);
   };
 
   return (

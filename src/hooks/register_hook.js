@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { pitelRegister } from '../services/pitel_register';
 
-export const useRegister = (sdkOptions) => {
+export const useRegister = ({ sdkOptions }) => {
   const [callState, setCallState] = useState('');
   const [pitelSDK, setPitelSDK] = useState();
 
-  useEffect(() => {
-    const pitelSDKRes = pitelRegister(sdkOptions, setCallState);
+  const registerFunc = () => {
+    const pitelSDKRes = pitelRegister({
+      sdkOptions: sdkOptions,
+      setCallState: setCallState,
+    });
     setPitelSDK(pitelSDKRes);
-  }, []);
+  };
 
   return {
     // State
@@ -18,5 +21,7 @@ export const useRegister = (sdkOptions) => {
     // setState
     setCallState,
     setPitelSDK,
+
+    registerFunc,
   };
 };
