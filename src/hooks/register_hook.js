@@ -4,6 +4,16 @@ import { pitelRegister } from '../services/pitel_register';
 export const useRegister = ({ sdkOptions, setPitelSDK }) => {
   const [callState, setCallState] = useState('');
   const [receivedPhoneNumber, setReceivedPhoneNumber] = useState('');
+  const [registerState, setRegisterState] = useState('UNREGISTER');
+
+  useEffect(() => {
+    if (callState === 'REGISTER') {
+      setRegisterState('REGISTER');
+    }
+    if (callState === 'UNREGISTER') {
+      setRegisterState('UNREGISTER');
+    }
+  }, [callState]);
 
   const registerFunc = () => {
     const pitelSDKRes = pitelRegister({
@@ -18,6 +28,7 @@ export const useRegister = ({ sdkOptions, setPitelSDK }) => {
     // State
     callState,
     receivedPhoneNumber,
+    registerState,
 
     // setState
     setCallState,

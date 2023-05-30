@@ -38,7 +38,7 @@ export const PitelCallOut = ({
   sdkOptions,
   pitelSDK,
   style,
-  btnTitle,
+  child,
   callToNumber,
 
   onReceived,
@@ -80,7 +80,7 @@ export const PitelCallOut = ({
       style={[styles.btnCall, { ...style }]}
       onPress={callOutgoing}
     >
-      <Text>{btnTitle}</Text>
+      {child}
     </TouchableOpacity>
   );
 };
