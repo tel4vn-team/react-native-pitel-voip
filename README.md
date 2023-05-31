@@ -180,8 +180,7 @@ const registerExtension = () => {
   [Example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/libs/screens/call_screen/index.js)
 
 ```js
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { PitelCallKit } from 'react-native-pitel-voip';
 
 export const CallScreen = ({ route, navigation }) => {
@@ -189,6 +188,10 @@ export const CallScreen = ({ route, navigation }) => {
   const [speaker, setSpeaker] = useState(false);
 
   const { pitelSDK, phoneNumber, direction, callState } = route.params;
+
+  useEffect(() => {
+    return () => pitelSDK.hangup();
+  }, []);
 
   return (
     <PitelCallKit

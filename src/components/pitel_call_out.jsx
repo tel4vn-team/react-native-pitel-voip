@@ -66,6 +66,9 @@ export const PitelCallOut = ({
           onCreated();
         }
         break;
+      // case 'CALL_ANSWERED':
+      //   InCallManager.stopRingback();
+      //   break;
     }
   }, [pitelSDK, callState, isCallOut]);
 

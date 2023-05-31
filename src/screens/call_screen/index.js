@@ -11,6 +11,7 @@ import SpeakerHigh from '../../assets/svgs/speaker_high.svg';
 import SpeakerLow from '../../assets/svgs/speaker_low.svg';
 import Hangup from '../../assets/svgs/hangup.svg';
 import Call from '../../assets/svgs/call.svg';
+import { Clock } from '../../components/clock/clock';
 
 export const PitelCallKit = ({
   pitelSDK,
@@ -33,7 +34,8 @@ export const PitelCallKit = ({
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
           <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
-          <Text style={styles.txtTimer}>00:10</Text>
+          {/* <Text style={styles.txtTimer}>00:10</Text> */}
+          <Clock />
         </View>
       </View>
       {callState === 'CALL_RECEIVED' && !acceptCall ? (
