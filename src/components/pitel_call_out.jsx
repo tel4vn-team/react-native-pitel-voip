@@ -60,21 +60,22 @@ export const PitelCallOut = ({
       case 'CALL_HANGUP':
         onHangup();
         setCallState('REGISTER');
+        InCallManager.stop();
         break;
       case 'CALL_CREATED':
         if (isCallOut) {
           onCreated();
         }
         break;
-      // case 'CALL_ANSWERED':
-      //   InCallManager.stopRingback();
-      //   break;
+      case 'CALL_ANSWERED':
+        InCallManager.stopRingback();
+        break;
     }
   }, [pitelSDK, callState, isCallOut]);
 
   const callOutgoing = () => {
     setIsCallOut(true);
-    InCallManager.start({ media: 'audio' });
+    InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
     pitelSDK.call(callToNumber);
   };
 
