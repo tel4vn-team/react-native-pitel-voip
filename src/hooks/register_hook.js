@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { pitelRegister } from '../services/pitel_register';
 
-export const useRegister = ({ sdkOptions, setPitelSDK }) => {
+export const useRegister = ({ sdkOptions, extension, setPitelSDK }) => {
   const [callState, setCallState] = useState('');
   const [receivedPhoneNumber, setReceivedPhoneNumber] = useState('');
   const [registerState, setRegisterState] = useState('UNREGISTER');
@@ -20,6 +20,7 @@ export const useRegister = ({ sdkOptions, setPitelSDK }) => {
       sdkOptions: sdkOptions,
       setCallState: setCallState,
       setReceivedPhoneNumber: setReceivedPhoneNumber,
+      extension: extension,
     });
     setPitelSDK(pitelSDKRes);
   };

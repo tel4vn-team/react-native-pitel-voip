@@ -4,6 +4,7 @@ export const pitelRegister = ({
   sdkOptions,
   setCallState,
   setReceivedPhoneNumber,
+  extension,
 }) => {
   const sdkDelegates = {
     onRegistered() {
@@ -29,6 +30,12 @@ export const pitelRegister = ({
       setCallState('CALL_HOLD');
     },
   };
-  let pitelSDK = new PitelSDK('xxx', 'xxx', '103', sdkDelegates, sdkOptions);
+  let pitelSDK = new PitelSDK(
+    'xxx',
+    'xxx',
+    extension,
+    sdkDelegates,
+    sdkOptions
+  );
   return pitelSDK;
 };

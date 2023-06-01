@@ -69,6 +69,12 @@ yarn add --dev react-native-svg-transformer
  </manifest>
 ```
 
+- In file `android/gradle.properties`
+
+```
+android.enableDexingArtifactTransform.desugaring=false
+```
+
 #### IOS
 
 - Request permission in file `Info.plist`
@@ -130,6 +136,7 @@ const {
 } = useRegister({
   sdkOptions: sdkOptions,
   setPitelSDK: setPitelSDK,
+  extension: `${register_extension}`,
 });
 ```
 
