@@ -246,6 +246,6 @@ Setting:
 2. Enter extension: example 102
 3. Click Setting icon
 4. Enter information to input field
-   ![tryit](assets/images/pitel_img_3.png)
+   ![tryit](src/assets/images/pitel_img_3.png)
 5. Save
 6. Click icon -> to connect
