@@ -34,7 +34,6 @@ export const PitelCallKit = ({
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
           <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
-          {/* <Text style={styles.txtTimer}>00:10</Text> */}
           <Clock />
         </View>
       </View>
