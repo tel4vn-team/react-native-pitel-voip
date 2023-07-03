@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
+import { Platform } from 'react-native';
 
 export const PitelCallNotif = ({
   callId,
@@ -26,7 +27,9 @@ export const PitelCallNotif = ({
 }) => {
   useEffect(() => {
     initializeCallKeep();
-    pushkit();
+    if (Platform.OS == 'ios') {
+      pushkit();
+    }
   }, []);
 
   const pushkit = () => {
