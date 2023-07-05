@@ -9,6 +9,7 @@ import {
   NotificationListener,
   NotificationBackground,
 } from './notification/push_notif';
+import { registerDeviceToken, removeDeviceToken } from './api/login_device';
 
 export {
   Counter,
@@ -22,4 +23,8 @@ export {
   getFcmToken,
   NotificationListener,
   NotificationBackground,
+
+  // Register Device Token
+  registerDeviceToken,
+  removeDeviceToken,
 };

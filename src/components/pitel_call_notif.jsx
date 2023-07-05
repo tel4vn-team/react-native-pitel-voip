@@ -17,6 +17,7 @@ export const PitelCallNotif = ({
 
   callkitSetup,
   children,
+  onIOSToken,
 
   onNativeCall,
   onAnswerCallAction,
@@ -35,9 +36,7 @@ export const PitelCallNotif = ({
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
       // --- send token to your apn provider server
-      console.log('===========token===========');
-      console.log(token);
-      console.log('========================');
+      onIOSToken(token);
     });
 
     VoipPushNotification.addEventListener('notification', (notification) => {

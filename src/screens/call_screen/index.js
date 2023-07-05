@@ -26,8 +26,6 @@ export const PitelCallKit = ({
   direction,
   callState,
 }) => {
-  const [acceptCall, setAcceptCall] = useState(false);
-
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
@@ -37,62 +35,41 @@ export const PitelCallKit = ({
           <Clock />
         </View>
       </View>
-      {callState === 'CALL_RECEIVED' && !acceptCall ? (
-        <View style={styles.incomingCall}>
-          <IconButton
-            icon={<Hangup />}
+      <View style={styles.groupBtnAction}>
+        <View style={styles.advancedBtnGroup}>
+          <IconTextButton
+            icon={microState ? <MicroOff /> : <MicroOn />}
+            title={'Mute'}
             onPress={() => {
-              InCallManager.stop();
-              onHangup();
-              setAcceptCall(false);
+              onMicro();
+              if (microState) {
+                pitelSDK.unmute();
+              } else {
+                pitelSDK.mute();
+              }
             }}
           />
-          <IconButton
-            icon={<Call />}
-            style={styles.acceptCall}
+          <IconTextButton
+            icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
+            title={'Speaker'}
             onPress={() => {
-              pitelSDK.accept();
-              setAcceptCall(true);
-            }}
-          />
-        </View>
-      ) : (
-        <View style={styles.groupBtnAction}>
-          <View style={styles.advancedBtnGroup}>
-            <IconTextButton
-              icon={microState ? <MicroOff /> : <MicroOn />}
-              title={'Mute'}
-              onPress={() => {
-                onMicro();
-                if (microState) {
-                  pitelSDK.unmute();
-                } else {
-                  pitelSDK.mute();
-                }
-              }}
-            />
-            <IconTextButton
-              icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
-              title={'Speaker'}
-              onPress={() => {
-                onSpeaker();
-                if (speakerState) {
-                  InCallManager.setSpeakerphoneOn(false);
-                } else {
-                  InCallManager.setSpeakerphoneOn(true);
-                }
-              }}
-            />
-          </View>
-          <IconButton
-            icon={<Hangup />}
-            onPress={() => {
-              InCallManager.stop();
-              onHangup();
+              onSpeaker();
+              if (speakerState) {
+                InCallManager.setSpeakerphoneOn(false);
+              } else {
+                InCallManager.setSpeakerphoneOn(true);
+              }
             }}
           />
         </View>
-      )}
+        <IconButton
+          icon={<Hangup />}
+          onPress={() => {
+            InCallManager.stop();
+            onHangup();
+          }}
+        />
+      </View>
     </View>
   );
 };
