@@ -4,6 +4,7 @@ import messaging, {
 import RNCallKeep from 'react-native-callkeep';
 
 import { callKitDisplay } from './callkit_service';
+import { Linking } from 'react-native';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -84,6 +85,8 @@ export const NotificationBackground = () => {
   messaging().setBackgroundMessageHandler(
     async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       console.log('Message handled in the background!', remoteMessage);
+      // Linking.openURL('mychat://');
+      // RNCallKeep.backToForeground();
       handleNotification(remoteMessage);
     }
   );

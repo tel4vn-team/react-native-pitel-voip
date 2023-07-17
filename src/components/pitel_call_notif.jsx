@@ -25,6 +25,10 @@ export const PitelCallNotif = ({
   onIncomingCallDisplayed,
   onToggleMute,
   onDTMF,
+
+  //!
+  sdkOptions,
+  registerFunc,
 }) => {
   useEffect(() => {
     initializeCallKeep();
@@ -32,6 +36,22 @@ export const PitelCallNotif = ({
       pushkit();
     }
   }, []);
+
+  useEffect(() => {
+    checkIsCall();
+  }, [sdkOptions]);
+
+  const checkIsCall = async () => {
+    const res = await RNCallKeep.getCalls();
+    if (res.length == 0) {
+      if (sdkOptions) {
+        if (sdkOptions.contactParams['pn-prid'] !== '') {
+          registerFunc();
+        }
+      }
+      console.log(res);
+    }
+  };
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
