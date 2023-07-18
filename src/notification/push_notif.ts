@@ -1,10 +1,9 @@
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
-import RNCallKeep from 'react-native-callkeep';
+import RNCallKeep, { IOptions } from 'react-native-callkeep';
 
 import { callKitDisplay } from './callkit_service';
-import { Linking } from 'react-native';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -27,7 +26,7 @@ export async function getFcmToken() {
     }
     return 'Empty';
   } catch (error) {
-    return `Error: FCM token not found ${error}`;
+    return '';
   }
 }
 
@@ -85,9 +84,36 @@ export const NotificationBackground = () => {
   messaging().setBackgroundMessageHandler(
     async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       console.log('Message handled in the background!', remoteMessage);
-      // Linking.openURL('mychat://');
-      // RNCallKeep.backToForeground();
+      const options: IOptions = {
+        ios: {
+          appName: 'rn_pitel_demo',
+        },
+        android: {
+          alertTitle: 'Permissions required',
+          alertDescription:
+            'This application needs to access your phone accounts',
+          cancelButton: 'Cancel',
+          okButton: 'ok',
+          foregroundService: {
+            channelId: 'com.pitel.pitelconnect.dev',
+            channelName: 'Foreground service for my app',
+            notificationTitle: 'My app is running on background',
+            notificationIcon: 'Path to the resource icon of the notification',
+          },
+          additionalPermissions: [],
+        },
+      };
+      RNCallKeep.registerPhoneAccount(options);
+      RNCallKeep.registerAndroidEvents();
+      RNCallKeep.setAvailable(true);
       handleNotification(remoteMessage);
     }
   );
+
+  RNCallKeep.addEventListener('answerCall', async () => {
+    for (var i = 0; i < 10; i++) {
+      RNCallKeep.backToForeground();
+    }
+    RNCallKeep.removeEventListener('answerCall');
+  });
 };

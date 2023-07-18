@@ -42,14 +42,23 @@ export const PitelCallNotif = ({
   }, [sdkOptions]);
 
   const checkIsCall = async () => {
-    const res = await RNCallKeep.getCalls();
-    if (res.length == 0) {
+    if (Platform.OS == 'android') {
       if (sdkOptions) {
         if (sdkOptions.contactParams['pn-prid'] !== '') {
           registerFunc();
         }
       }
-      console.log(res);
+    }
+    if (Platform.OS == 'ios') {
+      const res = await RNCallKeep.getCalls();
+      if (res.length == 0) {
+        if (sdkOptions) {
+          if (sdkOptions.contactParams['pn-prid'] !== '') {
+            registerFunc();
+          }
+        }
+        console.log(res);
+      }
     }
   };
 
