@@ -17,6 +17,7 @@ export const PitelCallNotif = ({
   children,
   onIOSToken,
 
+  // Callkit listener
   onNativeCall,
   onAnswerCallAction,
   onEndCallAction,
@@ -24,7 +25,7 @@ export const PitelCallNotif = ({
   onToggleMute,
   onDTMF,
 
-  //!
+  //! Config
   sdkOptions,
   registerFunc,
 
@@ -177,10 +178,14 @@ export const PitelCallNotif = ({
 
   const onNativeCallPitel = (data) => {
     let { handle, callUUID, name } = data;
-    onNativeCallPitel(data);
+    if (onNativeCall) {
+      onNativeCallPitel(data);
+    }
   };
   const onEndCallActionPitel = (data) => {
-    onEndCallAction(data);
+    if (onEndCallAction) {
+      onEndCallAction(data);
+    }
     let { callUUID } = data;
     setAcceptCall(false);
     setCancelCall(true);
@@ -188,23 +193,31 @@ export const PitelCallNotif = ({
   };
   const onToggleMutePitel = (data) => {
     let { muted, callUUID } = data;
-    onToggleMute(data);
+    if (onToggleMute) {
+      onToggleMute(data);
+    }
   };
   const onDTMFPitel = (data) => {
     let { digits, callUUID } = data;
-    onDTMF(data);
+    if (onDTMF) {
+      onDTMF(data);
+    }
   };
 
   const onIncomingCallDisplayedPitel = (data) => {
     // Incoming call displayed (used for pushkit on iOS)
-    onIncomingCallDisplayed(data);
+    if (onIncomingCallDisplayed) {
+      onIncomingCallDisplayed(data);
+    }
   };
 
   const onAnswerCallActionPitel = (data) => {
     let { callUUID } = data;
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
-    onAnswerCallAction(data);
+    if (onAnswerCallAction) {
+      onAnswerCallAction(data);
+    }
   };
 
   return <>{children}</>;

@@ -10,6 +10,7 @@ import {
   NotificationBackground,
 } from './notification/push_notif';
 import { registerDeviceToken, removeDeviceToken } from './api/login_device';
+import { PitelSDKProvider, PitelSDKContext } from './context/pitel_sdk_context';
 
 export {
   Counter,
@@ -27,4 +28,8 @@ export {
   // Register Device Token
   registerDeviceToken,
   removeDeviceToken,
+
+  // Context
+  PitelSDKProvider,
+  PitelSDKContext,
 };
