@@ -60,12 +60,14 @@ export const PitelCallKit = ({
                 if (direction === 'Outgoing') {
                   InCallManager.setSpeakerphoneOn(false);
                 } else {
+                  InCallManager.setSpeakerphoneOn(false);
                   await RNCallKeep.setAudioRoute(callID, 'Phone');
                 }
               } else {
                 if (direction === 'Outgoing') {
                   InCallManager.setSpeakerphoneOn(true);
                 } else {
+                  InCallManager.setSpeakerphoneOn(true);
                   await RNCallKeep.setAudioRoute(callID, 'Speaker');
                 }
               }

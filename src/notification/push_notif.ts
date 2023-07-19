@@ -114,7 +114,7 @@ export const NotificationBackground = () => {
   if (AppState.currentState != 'active' && Platform.OS == 'android') {
     RNCallKeep.addEventListener('answerCall', async (data) => {
       let { callUUID } = data;
-      RNCallKeep.setCurrentCallActive(callUUID);
+      RNCallKeep.endCall(callUUID);
       for (var i = 0; i < 10; i++) {
         RNCallKeep.backToForeground();
       }
