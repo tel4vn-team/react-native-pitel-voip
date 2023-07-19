@@ -38,8 +38,8 @@ function handleNotification(
     case 'CALL':
       if (remoteMessage.data != null) {
         const phoneNumber = remoteMessage.data.nameCaller ?? '';
-        // const uuid = remoteMessage.data.uuid ?? '';
-        callKitDisplay(phoneNumber);
+        const uuid = remoteMessage.data.uuid ?? '';
+        callKitDisplay(phoneNumber, uuid);
       }
       break;
     case 'CANCEL_ALL':
@@ -112,10 +112,13 @@ export const NotificationBackground = () => {
   );
 
   if (AppState.currentState != 'active' && Platform.OS == 'android') {
-    RNCallKeep.addEventListener('answerCall', async () => {
+    RNCallKeep.addEventListener('answerCall', async (data) => {
+      let { callUUID } = data;
+      RNCallKeep.setCurrentCallActive(callUUID);
       for (var i = 0; i < 10; i++) {
         RNCallKeep.backToForeground();
       }
+
       RNCallKeep.removeEventListener('answerCall');
     });
   }

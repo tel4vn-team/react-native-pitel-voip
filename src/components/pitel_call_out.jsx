@@ -34,7 +34,14 @@ window.navigator.mediaDevices = window.navigator.mediaDevices || mediaDevices;
 window.navigator.getUserMedia =
   window.navigator.getUserMedia || mediaDevices.getUserMedia;
 
-export const PitelCallOut = ({ pitelSDK, style, child, callToNumber }) => {
+export const PitelCallOut = ({
+  pitelSDK,
+  style,
+  child,
+  callToNumber,
+  isCallOut,
+  setIsCallOut,
+}) => {
   const callOutgoing = () => {
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });

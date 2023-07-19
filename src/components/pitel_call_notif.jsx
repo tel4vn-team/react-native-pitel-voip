@@ -28,6 +28,8 @@ export const PitelCallNotif = ({
   //! Config
   sdkOptions,
   registerFunc,
+  isCallOut,
+  setIsCallOut,
 
   pitelSDK,
   setCallState,
@@ -39,7 +41,6 @@ export const PitelCallNotif = ({
   const [acceptCall, setAcceptCall] = useState(false);
   const [cancelCall, setCancelCall] = useState(false);
 
-  const [isCallOut, setIsCallOut] = useState(false);
   const [enableHangup, setEnableHangup] = useState(true);
 
   useEffect(() => {

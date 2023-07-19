@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
+import RNCallKeep from 'react-native-callkeep';
 import styles from './styles';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
@@ -14,6 +15,7 @@ import Call from '../../assets/svgs/call.svg';
 import { Clock } from '../../components/clock/clock';
 
 export const PitelCallKit = ({
+  callID,
   pitelSDK,
   microState,
   speakerState,
@@ -52,12 +54,20 @@ export const PitelCallKit = ({
           <IconTextButton
             icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
             title={'Speaker'}
-            onPress={() => {
+            onPress={async () => {
               onSpeaker();
               if (speakerState) {
-                InCallManager.setSpeakerphoneOn(false);
+                if (direction === 'Outgoing') {
+                  InCallManager.setSpeakerphoneOn(false);
+                } else {
+                  await RNCallKeep.setAudioRoute(callID, 'Phone');
+                }
               } else {
-                InCallManager.setSpeakerphoneOn(true);
+                if (direction === 'Outgoing') {
+                  InCallManager.setSpeakerphoneOn(true);
+                } else {
+                  await RNCallKeep.setAudioRoute(callID, 'Speaker');
+                }
               }
             }}
           />
