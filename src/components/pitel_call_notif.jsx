@@ -29,13 +29,34 @@ export const PitelCallNotif = ({
   //!
   sdkOptions,
   registerFunc,
+
+  pitelSDK,
 }) => {
+  const [acceptCall, setAcceptCall] = useState(false);
+  const [cancelCall, setCancelCall] = useState(false);
+
+  // Init
   useEffect(() => {
     initializeCallKeep();
     if (Platform.OS == 'ios') {
       pushkit();
     }
   }, []);
+
+  // Hanlde incoming call
+  useEffect(() => {
+    if (acceptCall) {
+      registerFunc();
+    }
+  }, [acceptCall]);
+
+  //! For IOS
+  useEffect(() => {
+    if (cancelCall) {
+      pitelSDK.hangup();
+      setCancelCall(false);
+    }
+  }, [cancelCall]);
 
   useEffect(() => {
     checkIsCall();
@@ -127,7 +148,9 @@ export const PitelCallNotif = ({
   const onEndCallActionPitel = (data) => {
     onEndCallAction(data);
     let { callUUID } = data;
-    // RNCallKeep.endCall(callUUID);
+    setAcceptCall(false);
+    setCancelCall(true);
+    RNCallKeep.endCall(callUUID);
   };
   const onToggleMutePitel = (data) => {
     let { muted, callUUID } = data;
@@ -144,17 +167,10 @@ export const PitelCallNotif = ({
   };
 
   const onAnswerCallActionPitel = (data) => {
+    let { callUUID } = data;
+    RNCallKeep.setCurrentCallActive(callUUID);
+    setAcceptCall(true);
     onAnswerCallAction(data);
-    // called when the user answer the incoming call
-    // answer(true);
-    // setUUIDCall(callUUID);
-
-    // RNCallKeep.setCurrentCallActive(callUUID);
-
-    // // On Android display the app when answering a video call
-    // if (!isIOS && currentSession.cameraEnabled) {
-    //   RNCallKeep.backToForeground();
-    // }
   };
 
   return <>{children}</>;
