@@ -1,6 +1,7 @@
 import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
+import { AppState, Platform } from 'react-native';
 import RNCallKeep, { IOptions } from 'react-native-callkeep';
 
 import { callKitDisplay } from './callkit_service';
@@ -110,10 +111,12 @@ export const NotificationBackground = () => {
     }
   );
 
-  RNCallKeep.addEventListener('answerCall', async () => {
-    for (var i = 0; i < 10; i++) {
-      RNCallKeep.backToForeground();
-    }
-    RNCallKeep.removeEventListener('answerCall');
-  });
+  if (AppState.currentState != 'active' && Platform.OS == 'android') {
+    RNCallKeep.addEventListener('answerCall', async () => {
+      for (var i = 0; i < 10; i++) {
+        RNCallKeep.backToForeground();
+      }
+      RNCallKeep.removeEventListener('answerCall');
+    });
+  }
 };
