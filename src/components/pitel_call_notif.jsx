@@ -10,11 +10,9 @@ import React, { useEffect, useState } from 'react';
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
 import { Platform } from 'react-native';
+import InCallManager from 'react-native-incall-manager';
 
 export const PitelCallNotif = ({
-  callId,
-  setCallId,
-
   callkitSetup,
   children,
   onIOSToken,
@@ -31,9 +29,43 @@ export const PitelCallNotif = ({
   registerFunc,
 
   pitelSDK,
+  setCallState,
+  callState,
+  onReceived,
+  onHangup,
+  onCreated,
 }) => {
   const [acceptCall, setAcceptCall] = useState(false);
   const [cancelCall, setCancelCall] = useState(false);
+
+  const [isCallOut, setIsCallOut] = useState(false);
+  const [enableHangup, setEnableHangup] = useState(true);
+
+  useEffect(() => {
+    console.log('======callState================', callState);
+
+    switch (callState) {
+      case 'CALL_RECEIVED':
+        setIsCallOut(false);
+        onReceived();
+        break;
+      case 'CALL_HANGUP':
+        setEnableHangup(false);
+        onHangup();
+        setCallState('REGISTER');
+        InCallManager.stop();
+        break;
+      case 'CALL_CREATED':
+        if (isCallOut) {
+          onCreated();
+        }
+        break;
+      case 'CALL_ANSWERED':
+        setEnableHangup(true);
+        InCallManager.stopRingback();
+        break;
+    }
+  }, [pitelSDK, callState, isCallOut]);
 
   // Init
   useEffect(() => {
@@ -53,7 +85,9 @@ export const PitelCallNotif = ({
   //! For IOS
   useEffect(() => {
     if (cancelCall) {
-      pitelSDK.hangup();
+      if (enableHangup) {
+        pitelSDK.hangup();
+      }
       setCancelCall(false);
     }
   }, [cancelCall]);
