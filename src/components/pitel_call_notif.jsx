@@ -16,6 +16,7 @@ export const PitelCallNotif = ({
   callkitSetup,
   children,
   onIOSToken,
+  isLogin,
 
   // Callkit listener
   onNativeCall,
@@ -30,6 +31,7 @@ export const PitelCallNotif = ({
   registerFunc,
   isCallOut,
   setIsCallOut,
+  setCallID,
 
   pitelSDK,
   setCallState,
@@ -99,6 +101,7 @@ export const PitelCallNotif = ({
   }, [sdkOptions]);
 
   const checkIsCall = async () => {
+    if (isLogin == 'FALSE') return;
     if (Platform.OS == 'android') {
       if (sdkOptions) {
         if (sdkOptions.contactParams['pn-prid'] !== '') {
@@ -216,6 +219,7 @@ export const PitelCallNotif = ({
     let { callUUID } = data;
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
+    setCallID(callUUID);
     if (onAnswerCallAction) {
       onAnswerCallAction(data);
     }

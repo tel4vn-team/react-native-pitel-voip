@@ -30,12 +30,17 @@ export const pitelRegister = ({
       setCallState('CALL_HOLD');
     },
   };
+  const partnerOptions = {
+    userAgentString: 'Pitel Connect - v1.0.0',
+  };
+
   let pitelSDK = new PitelSDK(
     'xxx',
     'xxx',
     extension,
     sdkDelegates,
-    sdkOptions
+    sdkOptions,
+    partnerOptions
   );
   return pitelSDK;
 };
