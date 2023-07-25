@@ -139,10 +139,10 @@ export const PitelCallNotif = ({
   }, []);
 
   useEffect(() => {
-    if (aState == 'active') {
+    if (aState == 'active' && !acceptCall) {
       registerFunc();
     }
-  }, [aState]);
+  }, [aState, acceptCall]);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
