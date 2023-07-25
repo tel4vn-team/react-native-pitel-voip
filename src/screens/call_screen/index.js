@@ -56,19 +56,25 @@ export const PitelCallKit = ({
             title={'Speaker'}
             onPress={async () => {
               onSpeaker();
+              const res = await RNCallKeep.getAudioRoutes();
+
               if (speakerState) {
                 if (direction === 'Outgoing') {
                   InCallManager.setSpeakerphoneOn(false);
                 } else {
-                  InCallManager.setSpeakerphoneOn(false);
-                  await RNCallKeep.setAudioRoute(callID, 'Phone');
+                  const typeSpeaker = res.find(
+                    (item) => item.type == 'Phone'
+                  ).name;
+                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               } else {
                 if (direction === 'Outgoing') {
                   InCallManager.setSpeakerphoneOn(true);
                 } else {
-                  InCallManager.setSpeakerphoneOn(true);
-                  await RNCallKeep.setAudioRoute(callID, 'Speaker');
+                  const typeSpeaker = res.find(
+                    (item) => item.type == 'Speaker'
+                  ).name;
+                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               }
             }}
