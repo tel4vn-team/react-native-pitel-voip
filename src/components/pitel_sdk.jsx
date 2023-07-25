@@ -39,7 +39,7 @@ export const PitelSDK = ({
       wsServer: sdkOptionsInit.wssServer,
       sipPassword: sdkOptionsInit.sipPassword, //! TEST IOS
       // sipPassword: 'Agent21@@2023', //! TEST ANDROID
-      reconnectAttempts: 0,
+      // reconnectAttempts: 0,
       debug: true,
       contactParams: {
         'transport': 'ws',

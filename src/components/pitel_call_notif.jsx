@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
-import { Platform } from 'react-native';
+import { Platform, AppState } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 
 export const PitelCallNotif = ({
@@ -121,6 +121,28 @@ export const PitelCallNotif = ({
       }
     }
   };
+
+  //! Register when appstate active
+
+  const [aState, setAppState] = useState(AppState.currentState);
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      (nextAppState) => {
+        console.log('Next AppState is: ', nextAppState);
+        setAppState(nextAppState);
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (aState == 'active') {
+      registerFunc();
+    }
+  }, [aState]);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
