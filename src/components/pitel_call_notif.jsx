@@ -51,7 +51,10 @@ export const PitelCallNotif = ({
     switch (callState) {
       case 'CALL_RECEIVED':
         setIsCallOut(false);
-        onReceived();
+        if (acceptCall) {
+          pitelSDK.accept();
+          onReceived();
+        }
         break;
       case 'CALL_HANGUP':
         setEnableHangup(false);
@@ -98,7 +101,7 @@ export const PitelCallNotif = ({
 
   useEffect(() => {
     checkIsCall();
-  }, [sdkOptions]);
+  }, [sdkOptions, isLogin]);
 
   const checkIsCall = async () => {
     if (isLogin == 'FALSE') return;
@@ -139,22 +142,17 @@ export const PitelCallNotif = ({
   }, []);
 
   useEffect(() => {
-    if (aState == 'active' && !acceptCall) {
+    if (aState == 'active' && !acceptCall && isLogin == 'TRUE') {
       registerFunc();
     }
-  }, [aState, acceptCall]);
+  }, [aState, acceptCall, isLogin]);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
-      // --- send token to your apn provider server
       onIOSToken(token);
     });
 
     VoipPushNotification.addEventListener('notification', (notification) => {
-      // --- when receive remote voip push, register your VoIP client, show local notification ... etc
-      // this.doSomething();
-
-      // --- optionally, if you `addCompletionHandler` from the native side, once you have done the js jobs to initiate a call, call `completion()`
       VoipPushNotification.onVoipNotificationCompleted(notification.uuid);
     });
 
