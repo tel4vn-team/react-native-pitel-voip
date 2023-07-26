@@ -3,6 +3,7 @@ import messaging, {
 } from '@react-native-firebase/messaging';
 import { AppState, Platform } from 'react-native';
 import RNCallKeep, { IOptions } from 'react-native-callkeep';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { callKitDisplay } from './callkit_service';
 
@@ -44,9 +45,6 @@ function handleNotification(
       break;
     case 'CANCEL_ALL':
     case 'CANCEL_GROUP':
-      // if (remoteMessage.data.uuid) {
-      //   RNCallKeep.endCall(remoteMessage.data.uuid);
-      // }
       RNCallKeep.endAllCalls();
       break;
   }
@@ -121,6 +119,7 @@ export const NotificationBackground = () => {
       for (var i = 0; i < 10; i++) {
         RNCallKeep.backToForeground();
       }
+      await AsyncStorage.setItem('ACCEPT_CALL', 'TRUE');
 
       RNCallKeep.removeEventListener('answerCall');
     });

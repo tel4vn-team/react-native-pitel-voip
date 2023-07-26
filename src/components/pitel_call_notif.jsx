@@ -11,6 +11,8 @@ import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
 import { Platform, AppState } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const PitelCallNotif = ({
   callkitSetup,
@@ -47,19 +49,25 @@ export const PitelCallNotif = ({
 
   useEffect(() => {
     console.log('======callState================', callState);
-
     switch (callState) {
       case 'CALL_RECEIVED':
         setIsCallOut(false);
-        if (acceptCall) {
-          pitelSDK.accept();
-          onReceived();
+        if (Platform.OS == 'ios') {
+          if (acceptCall) {
+            pitelSDK.accept();
+            onReceived();
+          }
+        } else {
+          acceptCallAndroid();
         }
         break;
       case 'CALL_HANGUP':
         setEnableHangup(false);
         onHangup();
         setCallState('REGISTER');
+        if (Platform.OS === 'android') {
+          hangupAndroid();
+        }
         InCallManager.stop();
         break;
       case 'CALL_CREATED':
@@ -73,6 +81,18 @@ export const PitelCallNotif = ({
         break;
     }
   }, [pitelSDK, callState, isCallOut]);
+
+  const acceptCallAndroid = async () => {
+    const value = await AsyncStorage.getItem('ACCEPT_CALL');
+    if (value === 'TRUE' || acceptCall) {
+      pitelSDK.accept();
+      onReceived();
+    }
+  };
+
+  const hangupAndroid = async () => {
+    await AsyncStorage.setItem('ACCEPT_CALL', 'FALSE');
+  };
 
   // Init
   useEffect(() => {
@@ -132,7 +152,6 @@ export const PitelCallNotif = ({
     const appStateListener = AppState.addEventListener(
       'change',
       (nextAppState) => {
-        console.log('Next AppState is: ', nextAppState);
         setAppState(nextAppState);
       }
     );
