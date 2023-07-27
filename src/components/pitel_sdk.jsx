@@ -34,13 +34,13 @@ export const PitelSDK = ({
     setDeviceToken(deviceToken);
     const sdkOptionsInitialize = {
       sipOnly: true,
-      // userAgentString: 'Pitel Connect',
-      sipDomain: sdkOptionsInit.sipDomain,
+      sipDomain: `${sdkOptionsInit.sipDomain}:${sdkOptionsInit.port}`,
       wsServer: sdkOptionsInit.wssServer,
-      sipPassword: sdkOptionsInit.sipPassword, //! TEST IOS
-      // sipPassword: 'Agent21@@2023', //! TEST ANDROID
+      sipPassword: sdkOptionsInit.sipPassword,
       // reconnectAttempts: 0,
       debug: true,
+      contactName: sdkOptionsInit.extension,
+      viaHost: sdkOptionsInit.sipDomain,
       contactParams: {
         'transport': 'ws',
         'pn-provider': Platform.OS == 'android' ? 'fcm' : 'apns',

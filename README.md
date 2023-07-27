@@ -14,7 +14,7 @@
 ## Pitel Flow
 
 When user make call from Pitel app, Pitel Server pushes a notification for all user login (who receives the call). When user "Accept" call, extension will re-register to receive call.
-![Pitel Connect Flow](assets/images/pitel_connect_flow.png)
+![Pitel Flow](src/assets/images/pitel_connect_flow.png)
 
 ## Features
 
@@ -54,7 +54,7 @@ yarn add --dev react-native-svg-transformer
 ```
 
 5. Pushkit/ Push notification - Received VoIP and Wake app from Terminated State.
-   Note Please check [PUSH_NOTIF.md](). setup Pushkit (for IOS), push notification (for Android).
+   Note Please check [PUSH_NOTIF.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/%20PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
 
 6. Configure Project
 
