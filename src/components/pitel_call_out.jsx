@@ -35,44 +35,13 @@ window.navigator.getUserMedia =
   window.navigator.getUserMedia || mediaDevices.getUserMedia;
 
 export const PitelCallOut = ({
-  sdkOptions,
   pitelSDK,
   style,
   child,
   callToNumber,
-
-  onReceived,
-  onHangup,
-  onCreated,
-  setCallState,
-  callState,
+  isCallOut,
+  setIsCallOut,
 }) => {
-  const [isCallOut, setIsCallOut] = useState(false);
-
-  useEffect(() => {
-    console.log('======callState================', callState);
-
-    switch (callState) {
-      case 'CALL_RECEIVED':
-        setIsCallOut(false);
-        onReceived();
-        break;
-      case 'CALL_HANGUP':
-        onHangup();
-        setCallState('REGISTER');
-        InCallManager.stop();
-        break;
-      case 'CALL_CREATED':
-        if (isCallOut) {
-          onCreated();
-        }
-        break;
-      case 'CALL_ANSWERED':
-        InCallManager.stopRingback();
-        break;
-    }
-  }, [pitelSDK, callState, isCallOut]);
-
   const callOutgoing = () => {
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });

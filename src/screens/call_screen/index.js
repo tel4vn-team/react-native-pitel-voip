@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
+import RNCallKeep from 'react-native-callkeep';
 import styles from './styles';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
@@ -14,6 +15,7 @@ import Call from '../../assets/svgs/call.svg';
 import { Clock } from '../../components/clock/clock';
 
 export const PitelCallKit = ({
+  callID,
   pitelSDK,
   microState,
   speakerState,
@@ -26,74 +28,66 @@ export const PitelCallKit = ({
   direction,
   callState,
 }) => {
-  const [acceptCall, setAcceptCall] = useState(false);
-
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
           <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
-          {/* <Text style={styles.txtTimer}>00:10</Text> */}
           <Clock />
         </View>
       </View>
-      {callState === 'CALL_RECEIVED' && !acceptCall ? (
-        <View style={styles.incomingCall}>
-          <IconButton
-            icon={<Hangup />}
+      <View style={styles.groupBtnAction}>
+        <View style={styles.advancedBtnGroup}>
+          <IconTextButton
+            icon={microState ? <MicroOff /> : <MicroOn />}
+            title={'Mute'}
             onPress={() => {
-              InCallManager.stop();
-              onHangup();
-              setAcceptCall(false);
+              onMicro();
+              if (microState) {
+                pitelSDK.unmute();
+              } else {
+                pitelSDK.mute();
+              }
             }}
           />
-          <IconButton
-            icon={<Call />}
-            style={styles.acceptCall}
-            onPress={() => {
-              pitelSDK.accept();
-              setAcceptCall(true);
-            }}
-          />
-        </View>
-      ) : (
-        <View style={styles.groupBtnAction}>
-          <View style={styles.advancedBtnGroup}>
-            <IconTextButton
-              icon={microState ? <MicroOff /> : <MicroOn />}
-              title={'Mute'}
-              onPress={() => {
-                onMicro();
-                if (microState) {
-                  pitelSDK.unmute();
-                } else {
-                  pitelSDK.mute();
-                }
-              }}
-            />
-            <IconTextButton
-              icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
-              title={'Speaker'}
-              onPress={() => {
-                onSpeaker();
-                if (speakerState) {
+          <IconTextButton
+            icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
+            title={'Speaker'}
+            onPress={async () => {
+              onSpeaker();
+              const res = await RNCallKeep.getAudioRoutes();
+
+              if (speakerState) {
+                if (direction === 'Outgoing') {
                   InCallManager.setSpeakerphoneOn(false);
                 } else {
-                  InCallManager.setSpeakerphoneOn(true);
+                  const typeSpeaker = res.find(
+                    (item) => item.type == 'Phone'
+                  ).name;
+                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
-              }}
-            />
-          </View>
-          <IconButton
-            icon={<Hangup />}
-            onPress={() => {
-              InCallManager.stop();
-              onHangup();
+              } else {
+                if (direction === 'Outgoing') {
+                  InCallManager.setSpeakerphoneOn(true);
+                } else {
+                  const typeSpeaker = res.find(
+                    (item) => item.type == 'Speaker'
+                  ).name;
+                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
+                }
+              }
             }}
           />
         </View>
-      )}
+        <IconButton
+          icon={<Hangup />}
+          onPress={() => {
+            InCallManager.stop();
+            onHangup();
+          }}
+        />
+      </View>
     </View>
   );
 };
