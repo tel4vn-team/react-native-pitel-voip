@@ -65,6 +65,7 @@ export const PitelCallKit = ({
                   const typeSpeaker = res.find(
                     (item) => item.type == 'Phone'
                   ).name;
+                  InCallManager.setSpeakerphoneOn(false);
                   await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               } else {
@@ -74,6 +75,7 @@ export const PitelCallKit = ({
                   const typeSpeaker = res.find(
                     (item) => item.type == 'Speaker'
                   ).name;
+                  InCallManager.setSpeakerphoneOn(true);
                   await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               }

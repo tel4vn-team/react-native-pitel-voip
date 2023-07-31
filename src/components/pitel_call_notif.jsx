@@ -146,25 +146,19 @@ export const PitelCallNotif = ({
   };
 
   //! Register when appstate active
-
-  const [aState, setAppState] = useState(AppState.currentState);
   useEffect(() => {
     const appStateListener = AppState.addEventListener(
       'change',
       (nextAppState) => {
-        setAppState(nextAppState);
+        if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
+          checkIsCall();
+        }
       }
     );
     return () => {
       appStateListener?.remove();
     };
-  }, []);
-
-  useEffect(() => {
-    if (aState == 'active' && !acceptCall && isLogin == 'TRUE') {
-      registerFunc();
-    }
-  }, [aState, acceptCall, isLogin]);
+  }, [isLogin, acceptCall, sdkOptions]);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
