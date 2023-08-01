@@ -60,7 +60,7 @@ yarn add --dev react-native-svg-transformer
 
 #### Android:
 
-- In file `android/app/src/main/AndroidManifest.xml`
+- In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/android/app/src/main/AndroidManifest.xml)
 
 ```xml
  <manifest...>
@@ -73,6 +73,21 @@ yarn add --dev react-native-svg-transformer
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    ...
+    // show when lock screen
+    <application
+    ...
+    >
+        <activity
+            ...
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+        >
+            ...
+        </activity>
+    </application>
  </manifest>
 ```
 

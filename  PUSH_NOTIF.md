@@ -3,10 +3,49 @@
 > **Warning**
 > IOS only working on real device, not on simulator (Callkit framework not working on simulator)
 
+## Pitel Flow
+
+When user make call from Pitel app, Pitel Server pushes a notification for all user login (who receives the call). When user "Accept" call, extension will re-register to receive call.
+![Pitel Flow](src/assets/images/pitel_connect_flow.png)
+
+## Image callkit
+
+<table>
+  <tr>
+    <td>iOS(Alert)</td>
+    <td>iOS(Lockscreen)</td>
+    <td>iOS(full screen)</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="src/assets/images/call_kit_1.png" width="220">
+    </td>
+    <td>
+      <img src="src/assets/images/call_kit_2.png" width="220">
+    </td>
+    <td>
+      <img src="src/assets/images/call_kit_3.png" width="220">
+    </td>
+  </tr>
+  <tr>	  
+    <td>Android(Alert) - Audio</td>
+    <td>Android(Lockscreen | Fullscreen) - Audio</td>
+  </tr>
+  <tr>
+    <td>
+      <img src="src/assets/images/call_kit_android_1.png" width="220">
+    </td>
+    <td>
+      <img src="src/assets/images/call_kit_android_2.png" width="220">
+    </td>
+    <td>
+      <img src="src/assets/images/call_kit_android_3.png" width="220">
+    </td>
+  </tr>
+ </table>
+ 
 # Setup & Certificate
-
 #### IOS
-
 If you are making VoIP application than you definitely want to update your application in the background & terminate state as well as wake your application when any VoIP call is being received.
 
 **1. Create Apple Push Notification certificate.**
@@ -39,6 +78,25 @@ Follow the instructions to [create a certificate signing request](https://devel
 
 ![push_img_5](src/assets/push_img/push_img_5.png)
 
+- Create APNs key and upload in firebase project. In your apple developer account.
+  ![apns_key](src/assets/push_img/apns_key.png)
+- Upload APNs key to your firebase
+  - Create new your IOS App in Firebase project.
+    ![ios_app](src/assets/push_img/ios_app.png)
+  - Download file .p8 to upload to firebase
+    ![download_apns_key](src/assets/push_img/download_apns_key.png)
+  - Select IOS app -> upload Apns key
+    ![upload_key_firebase](src/assets/push_img/upload_key_firebase.png)
+  - Fill information in upload Apns key popup
+    ![upload_key_firebase_popup](src/assets/push_img/upload_key_firebase_popup.png)
+
+##### Installing your Firebase configuration file
+
+- Next you must add the file to the project using Xcode (adding manually via the filesystem won't link the file to the project). Using Xcode, open the project's ios/{projectName}.xcworkspace file. Right click Runner from the left-hand side project navigation within Xcode and select "Add files", as seen below:
+  ![ios_google_service_1](src/assets/push_img/ios_google_service_1.png)
+- Select the GoogleService-Info.plist file you downloaded, and ensure the "Copy items if needed" checkbox is enabled:
+  ![ios_google_service_2](src/assets/push_img/ios_google_service_2.png)
+
 #### Android
 
 Using FCM (Firebase Cloud Message) to handle push notification wake up app when app run on Background or Terminate
@@ -55,31 +113,12 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
   ![push_img_3](src/assets/push_img/push_img_3.png)
 
 > **Note**
-> After complete all step Setup. Please send information to dev of Tel4vn, about:
->
-> - Bunlde/package Id: example com.company.app
-> - File certificate .p12 for IOS.
-> - Server key for Android
+> After complete all step Setup. Please send information to dev of Tel4vn in [here](https://portal-sdk.tel4vn.com/)
 
 # Installation (your project)
 
-**Config your project**
-
-- IOS
-  In ios/${YOUR_PROJECT_NAME}/Info.plist
-
-```xml
-<key>UIBackgroundModes</key>
-<array>
-    <string>fetch</string>
-	<string>processing</string>
-	<string>remote-notification</string>
-	<string>voip</string>
-</array>
-```
-
-Replace your file ios/${YOUR_PROJECT_NAME}/AppDelegate.mm with
-[AppDelegate](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/ios/rn_pitel_demo/AppDelegate.mm)
+- IOS: Replace your file ios/${YOUR_PROJECT_NAME}/AppDelegate.mm with
+  [AppDelegate](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/ios/rn_pitel_demo/AppDelegate.mm)
 
 ## How to test
 
@@ -117,7 +156,8 @@ curl --location 'https://fcm.googleapis.com/fcm/send' \
         "nameCaller": "Anh Quang",
         "avatar": "Anh Quang",
         "phoneNumber": "0341111111",
-        "appName": "Pitel Connnect"
+        "appName": "Pitel Connnect",
+        "callType": "CALL"
     },
     "content_available": true,
     "priority": "high"
