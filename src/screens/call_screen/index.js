@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import RNCallKeep from 'react-native-callkeep';
 import styles from './styles';
@@ -65,7 +71,9 @@ export const PitelCallKit = ({
                   const typeSpeaker = res.find(
                     (item) => item.type == 'Phone'
                   ).name;
-                  InCallManager.setSpeakerphoneOn(false);
+                  if (Platform.OS === 'android') {
+                    InCallManager.setSpeakerphoneOn(false);
+                  }
                   await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               } else {
@@ -75,7 +83,9 @@ export const PitelCallKit = ({
                   const typeSpeaker = res.find(
                     (item) => item.type == 'Speaker'
                   ).name;
-                  InCallManager.setSpeakerphoneOn(true);
+                  if (Platform.OS === 'android') {
+                    InCallManager.setSpeakerphoneOn(true);
+                  }
                   await RNCallKeep.setAudioRoute(callID, typeSpeaker);
                 }
               }
