@@ -1,4 +1,4 @@
-import PitelSDK from 'pitel-sdk-webrtc';
+import PitelSDK from 'pitel-sdk-for-rn';
 
 export const pitelRegister = ({
   sdkOptions,

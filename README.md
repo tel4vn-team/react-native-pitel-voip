@@ -36,7 +36,7 @@ yarn add react-native-pitel-voip
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.0.1 react-native-svg@13.9.0 react-native-voip-push-notification@3.3.1 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-webrtc @react-native-async-storage/async-storage@1.19.1
+yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.0.1 react-native-svg@13.9.0 react-native-voip-push-notification@3.3.1 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1
 ```
 
 3. Pod install
