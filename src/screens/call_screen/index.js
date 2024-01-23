@@ -23,17 +23,60 @@ import { Clock } from '../../components/clock/clock';
 export const PitelCallKit = ({
   callID,
   pitelSDK,
-  microState,
-  speakerState,
-
   onHangup,
-  onMicro,
-  onSpeaker,
 
   phoneNumber,
   direction,
   callState,
 }) => {
+  const [mute, setMute] = useState(false);
+  const [speaker, setSpeaker] = useState(false);
+
+  const selectAudio = async () => {
+    if (direction === 'Outgoing') {
+      selectAudioOutgoing(speaker);
+    } else {
+      selectAudioIncoming(speaker);
+    }
+  };
+
+  const selectAudioIncoming = async () => {
+    const res = await RNCallKeep.getAudioRoutes();
+    if (speaker) {
+      const typeSpeaker = res.find((item) => item.type == 'Phone').name;
+      if (Platform.OS === 'android') {
+        InCallManager.setSpeakerphoneOn(false);
+      }
+      await RNCallKeep.setAudioRoute(callID, typeSpeaker);
+    } else {
+      const typeSpeaker = res.find((item) => item.type == 'Speaker').name;
+      if (Platform.OS === 'android') {
+        InCallManager.setSpeakerphoneOn(true);
+      }
+      await RNCallKeep.setAudioRoute(callID, typeSpeaker);
+    }
+  };
+
+  const selectAudioOutgoing = async () => {
+    if (speaker) {
+      if (Platform.OS == 'android') {
+        // TODO: feature select audio
+        // InCallManager.setSpeakerphoneOn(false);
+        const res = await InCallManager.chooseAudioRoute('BLUETOOTH');
+      } else {
+        InCallManager.setSpeakerphoneOn(false);
+      }
+    } else {
+      if (Platform.OS == 'android') {
+        // TODO: feature select audio
+        // InCallManager.setSpeakerphoneOn(false);
+        const res = await InCallManager.chooseAudioRoute('SPEAKER_PHONE');
+      } else {
+        InCallManager.setSpeakerphoneOn(false);
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerCallInfo}>
@@ -46,10 +89,10 @@ export const PitelCallKit = ({
       <View style={styles.groupBtnAction}>
         <View style={styles.advancedBtnGroup}>
           <IconTextButton
-            icon={microState ? <MicroOff /> : <MicroOn />}
+            icon={mute ? <MicroOff /> : <MicroOn />}
             title={'Mute'}
             onPress={() => {
-              onMicro();
+              setMute(!mute);
               if (microState) {
                 pitelSDK.unmute();
               } else {
@@ -58,37 +101,11 @@ export const PitelCallKit = ({
             }}
           />
           <IconTextButton
-            icon={speakerState ? <SpeakerHigh /> : <SpeakerLow />}
+            icon={speaker ? <SpeakerHigh /> : <SpeakerLow />}
             title={'Speaker'}
             onPress={async () => {
-              onSpeaker();
-              const res = await RNCallKeep.getAudioRoutes();
-
-              if (speakerState) {
-                if (direction === 'Outgoing') {
-                  InCallManager.setSpeakerphoneOn(false);
-                } else {
-                  const typeSpeaker = res.find(
-                    (item) => item.type == 'Phone'
-                  ).name;
-                  if (Platform.OS === 'android') {
-                    InCallManager.setSpeakerphoneOn(false);
-                  }
-                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
-                }
-              } else {
-                if (direction === 'Outgoing') {
-                  InCallManager.setSpeakerphoneOn(true);
-                } else {
-                  const typeSpeaker = res.find(
-                    (item) => item.type == 'Speaker'
-                  ).name;
-                  if (Platform.OS === 'android') {
-                    InCallManager.setSpeakerphoneOn(true);
-                  }
-                  await RNCallKeep.setAudioRoute(callID, typeSpeaker);
-                }
-              }
+              setSpeaker(!speaker);
+              selectAudio();
             }}
           />
         </View>

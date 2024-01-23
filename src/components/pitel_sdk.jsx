@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, LogBox } from 'react-native';
 import { getFcmToken, NotificationListener } from '../notification/push_notif';
 import { registerDeviceToken, removeDeviceToken } from '../api/login_device';
+
+// LogBox.ignoreAllLogs();
 
 export const PitelSDK = ({
   children,
