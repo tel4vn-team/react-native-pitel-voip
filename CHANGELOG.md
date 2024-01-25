@@ -2,6 +2,14 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.0.1 - 2024-01-25
+
+- Support connect with bluetooth device
+
+## 1.0.0 - 2023-06-02
+
+- Release version 1.0.0
+
 ## 0.0.6 - 2023-06-01
 
 - Dynamic register extension.
