@@ -19,6 +19,7 @@ import SpeakerLow from '../../assets/svgs/speaker_low.svg';
 import Hangup from '../../assets/svgs/hangup.svg';
 import Call from '../../assets/svgs/call.svg';
 import { Clock } from '../../components/clock/clock';
+import { AudioModal } from '../../components/modals/audio_modal';
 
 export const PitelCallKit = ({
   callID,
@@ -31,19 +32,44 @@ export const PitelCallKit = ({
 }) => {
   const [mute, setMute] = useState(false);
   const [speaker, setSpeaker] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [audioList, setAudioList] = React.useState([]);
 
   const selectAudio = async () => {
-    if (direction === 'Outgoing') {
-      selectAudioOutgoing(speaker);
-    } else {
-      selectAudioIncoming(speaker);
+    InCallManager.start({ media: 'audio' });
+    const res = await RNCallKeep.getAudioRoutes();
+    if (Platform.OS == 'ios') {
+      InCallManager.setForceSpeakerphoneOn(false);
+      const checkType =
+        res.find((item) => item.type == 'Bluetooth')?.type ?? null;
+      if (checkType != null) {
+        const audioListTemp = res.filter((item) => item.type != 'Phone');
+        setAudioList(audioListTemp);
+        setModalVisible(true);
+        return;
+      } else {
+        setAudioList(res);
+        setModalVisible(true);
+      }
     }
+    setAudioList(res);
+    setModalVisible(true);
+    //!
+    // if (direction === 'Outgoing') {
+    //   selectAudioOutgoing(speaker);
+    // } else {
+    //   // setModalVisible(true);
+    //   selectAudioIncoming(speaker);
+    // }
   };
 
   const selectAudioIncoming = async () => {
+    InCallManager.start({ media: 'audio' });
     const res = await RNCallKeep.getAudioRoutes();
+    console.log('==========res============', res);
     if (speaker) {
-      const typeSpeaker = res.find((item) => item.type == 'Phone').name;
+      // const typeSpeaker = res.find((item) => item.type == 'Phone').name;
+      const typeSpeaker = res.find((item) => item.type == 'Bluetooth').name;
       if (Platform.OS === 'android') {
         InCallManager.setSpeakerphoneOn(false);
       }
@@ -64,7 +90,8 @@ export const PitelCallKit = ({
         // InCallManager.setSpeakerphoneOn(false);
         const res = await InCallManager.chooseAudioRoute('BLUETOOTH');
       } else {
-        InCallManager.setSpeakerphoneOn(false);
+        // InCallManager.setSpeakerphoneOn(false);
+        InCallManager.setForceSpeakerphoneOn(false);
       }
     } else {
       if (Platform.OS == 'android') {
@@ -72,13 +99,20 @@ export const PitelCallKit = ({
         // InCallManager.setSpeakerphoneOn(false);
         const res = await InCallManager.chooseAudioRoute('SPEAKER_PHONE');
       } else {
-        InCallManager.setSpeakerphoneOn(false);
+        // InCallManager.setSpeakerphoneOn(false);
+        InCallManager.setForceSpeakerphoneOn(true);
       }
     }
   };
 
   return (
     <View style={styles.container}>
+      <AudioModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        audioList={audioList}
+        callID={callID}
+      />
       <View style={styles.headerCallInfo}>
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
@@ -93,7 +127,7 @@ export const PitelCallKit = ({
             title={'Mute'}
             onPress={() => {
               setMute(!mute);
-              if (microState) {
+              if (mute) {
                 pitelSDK.unmute();
               } else {
                 pitelSDK.mute();

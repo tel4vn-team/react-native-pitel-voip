@@ -104,6 +104,7 @@ export const PitelCallNotif = ({
 
   // Hanlde incoming call
   useEffect(() => {
+    console.log('===========acceptCall===========', acceptCall);
     if (acceptCall) {
       registerFunc();
     }
@@ -248,7 +249,7 @@ export const PitelCallNotif = ({
     }
   };
 
-  const onAnswerCallActionPitel = (data) => {
+  const onAnswerCallActionPitel = async (data) => {
     let { callUUID } = data;
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
