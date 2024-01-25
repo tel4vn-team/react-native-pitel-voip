@@ -86,7 +86,7 @@ export const PitelCallKit = ({
             }}
           />
           <IconTextButton
-            icon={speaker ? <SpeakerHigh /> : <SpeakerLow />}
+            icon={<SpeakerHigh />}
             title={'Speaker'}
             onPress={async () => {
               setSpeaker(!speaker);
