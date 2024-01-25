@@ -31,7 +31,7 @@ export const pitelRegister = ({
     },
   };
   const partnerOptions = {
-    userAgentString: 'Pitel Connect - v1.0.0',
+    userAgentString: 'RN Pitel VoIP - v1.0.0',
   };
 
   let pitelSDK = new PitelSDK(

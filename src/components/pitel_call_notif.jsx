@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
@@ -13,6 +13,7 @@ import { Platform, AppState } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PitelSDKContext } from '../context/pitel_sdk_context';
 
 export const PitelCallNotif = ({
   callkitSetup,
@@ -47,6 +48,8 @@ export const PitelCallNotif = ({
 
   const [enableHangup, setEnableHangup] = useState(true);
 
+  const { startClock, setStartClock } = useContext(PitelSDKContext);
+
   useEffect(() => {
     console.log('======callState================', callState);
     switch (callState) {
@@ -62,6 +65,7 @@ export const PitelCallNotif = ({
         }
         break;
       case 'CALL_HANGUP':
+        setStartClock(false);
         setEnableHangup(false);
         onHangup();
         setCallState('REGISTER');
@@ -77,6 +81,7 @@ export const PitelCallNotif = ({
         break;
       case 'CALL_ANSWERED':
         setEnableHangup(true);
+        setStartClock(true);
         InCallManager.stopRingback();
         break;
     }
