@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, LogBox } from 'react-native';
 import { getFcmToken, NotificationListener } from '../notification/push_notif';
 import { registerDeviceToken, removeDeviceToken } from '../api/login_device';
+import { request, PERMISSIONS } from 'react-native-permissions';
+
+// LogBox.ignoreAllLogs();
 
 export const PitelSDK = ({
   children,
@@ -16,6 +19,15 @@ export const PitelSDK = ({
 
   useEffect(() => {
     NotificationListener();
+  }, []);
+
+  useEffect(async () => {
+    if (Platform.OS == 'ios') {
+      await request(PERMISSIONS.IOS.BLUETOOTH);
+    }
+    if (Platform.OS == 'android') {
+      await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT);
+    }
   }, []);
 
   useEffect(() => {

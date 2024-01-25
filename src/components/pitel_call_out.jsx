@@ -18,6 +18,7 @@ import {
   RTCSessionDescription,
 } from 'pitel-react-native-webrtc';
 import InCallManager from 'react-native-incall-manager';
+import RNCallKeep from 'react-native-callkeep';
 
 import { pitelRegister } from '../services/pitel_register';
 import { useRegister } from '../hooks/register_hook';
@@ -45,6 +46,8 @@ export const PitelCallOut = ({
   const callOutgoing = () => {
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+    //! TODO
+    // RNCallKeep.startCall('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', '121', '121');
     pitelSDK.call(callToNumber);
   };
 
