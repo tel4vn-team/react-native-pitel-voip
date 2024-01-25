@@ -54,55 +54,6 @@ export const PitelCallKit = ({
     }
     setAudioList(res);
     setModalVisible(true);
-    //!
-    // if (direction === 'Outgoing') {
-    //   selectAudioOutgoing(speaker);
-    // } else {
-    //   // setModalVisible(true);
-    //   selectAudioIncoming(speaker);
-    // }
-  };
-
-  const selectAudioIncoming = async () => {
-    InCallManager.start({ media: 'audio' });
-    const res = await RNCallKeep.getAudioRoutes();
-    console.log('==========res============', res);
-    if (speaker) {
-      // const typeSpeaker = res.find((item) => item.type == 'Phone').name;
-      const typeSpeaker = res.find((item) => item.type == 'Bluetooth').name;
-      if (Platform.OS === 'android') {
-        InCallManager.setSpeakerphoneOn(false);
-      }
-      await RNCallKeep.setAudioRoute(callID, typeSpeaker);
-    } else {
-      const typeSpeaker = res.find((item) => item.type == 'Speaker').name;
-      if (Platform.OS === 'android') {
-        InCallManager.setSpeakerphoneOn(true);
-      }
-      await RNCallKeep.setAudioRoute(callID, typeSpeaker);
-    }
-  };
-
-  const selectAudioOutgoing = async () => {
-    if (speaker) {
-      if (Platform.OS == 'android') {
-        // TODO: feature select audio
-        // InCallManager.setSpeakerphoneOn(false);
-        const res = await InCallManager.chooseAudioRoute('BLUETOOTH');
-      } else {
-        // InCallManager.setSpeakerphoneOn(false);
-        InCallManager.setForceSpeakerphoneOn(false);
-      }
-    } else {
-      if (Platform.OS == 'android') {
-        // TODO: feature select audio
-        // InCallManager.setSpeakerphoneOn(false);
-        const res = await InCallManager.chooseAudioRoute('SPEAKER_PHONE');
-      } else {
-        // InCallManager.setSpeakerphoneOn(false);
-        InCallManager.setForceSpeakerphoneOn(true);
-      }
-    }
   };
 
   return (
