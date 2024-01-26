@@ -55,43 +55,41 @@ export const AudioModal = ({
   };
 
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Choose audio output</Text>
-            <View>
-              {audioList.map((item) => {
-                return (
-                  <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={() => selectAudioRoute(item.type)}
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={() => {
+        setModalVisible(!modalVisible);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.modalText}>Choose audio output</Text>
+          <View>
+            {audioList.map((item) => {
+              return (
+                <TouchableOpacity
+                  style={[styles.button]}
+                  onPress={() => selectAudioRoute(item.type)}
+                >
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color: item.type == audioSelected ? 'cyan' : 'black',
+                      },
+                    ]}
                   >
-                    <Text
-                      style={[
-                        styles.textStyle,
-                        {
-                          color: item.type == audioSelected ? 'cyan' : 'black',
-                        },
-                      ]}
-                    >
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

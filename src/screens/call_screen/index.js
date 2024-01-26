@@ -26,6 +26,7 @@ export const PitelCallKit = ({
   pitelSDK,
   onHangup,
 
+  textClock,
   phoneNumber,
   direction,
   callState,
@@ -68,7 +69,7 @@ export const PitelCallKit = ({
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
           <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
-          <Clock />
+          <Clock textClock={textClock} />
         </View>
       </View>
       <View style={styles.groupBtnAction}>

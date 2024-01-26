@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { pitelRegister } from '../services/pitel_register';
+import { getIceServer } from '../api/login_device';
 
 export const useRegister = ({ sdkOptions, extension, setPitelSDK }) => {
   const [callState, setCallState] = useState('');
@@ -15,7 +16,10 @@ export const useRegister = ({ sdkOptions, extension, setPitelSDK }) => {
     }
   }, [callState]);
 
-  const registerFunc = () => {
+  const registerFunc = async () => {
+    // TODO: config turn server here
+    // const iceServer = []
+    const turn = await getIceServer();
     const pitelSDKRes = pitelRegister({
       sdkOptions: sdkOptions,
       setCallState: setCallState,

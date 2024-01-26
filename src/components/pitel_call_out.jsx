@@ -46,8 +46,6 @@ export const PitelCallOut = ({
   const callOutgoing = () => {
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
-    //! TODO
-    // RNCallKeep.startCall('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', '121', '121');
     pitelSDK.call(callToNumber);
   };
 
