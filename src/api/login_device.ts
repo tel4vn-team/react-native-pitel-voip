@@ -14,6 +14,7 @@ export const getIceServer = async (): Promise<any> => {
     return data;
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
 
