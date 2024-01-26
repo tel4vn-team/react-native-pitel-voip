@@ -1,4 +1,21 @@
 const ENDPOINT = 'https://push.tel4vn.com/v1';
+const CODE = 'Pitel@@2023!Mobile!PitelConnect';
+
+export const getIceServer = async (): Promise<any> => {
+  try {
+    const res = await fetch(`${ENDPOINT}/server/turn`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': CODE,
+      },
+    });
+    const data = res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const registerDeviceToken = async (
   params: RegisterDeviceTokenReqProps
