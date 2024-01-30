@@ -46,6 +46,7 @@ export const PitelCallOut = ({
   const callOutgoing = () => {
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+
     pitelSDK.call(callToNumber);
   };
 
