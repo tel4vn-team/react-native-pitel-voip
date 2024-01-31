@@ -79,29 +79,10 @@ export const NotificationListener = () => {
   );
 };
 
-export const NotificationBackground = () => {
+export const NotificationBackground = (options: any) => {
   messaging().setBackgroundMessageHandler(
     async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       if (Platform.OS === 'android') {
-        const options: IOptions = {
-          ios: {
-            appName: 'rn_pitel_demo',
-          },
-          android: {
-            alertTitle: 'Permissions required',
-            alertDescription:
-              'This application needs to access your phone accounts',
-            cancelButton: 'Cancel',
-            okButton: 'ok',
-            foregroundService: {
-              channelId: 'com.pitel.pitelconnect.dev',
-              channelName: 'Foreground service for my app',
-              notificationTitle: 'My app is running on background',
-              notificationIcon: 'Path to the resource icon of the notification',
-            },
-            additionalPermissions: [],
-          },
-        };
         RNCallKeep.registerPhoneAccount(options);
         RNCallKeep.registerAndroidEvents();
         RNCallKeep.setAvailable(true);
