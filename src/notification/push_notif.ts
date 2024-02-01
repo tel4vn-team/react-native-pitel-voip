@@ -2,7 +2,7 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import { AppState, Platform } from 'react-native';
-import RNCallKeep, { IOptions } from 'react-native-callkeep';
+import RNCallKeep from 'react-native-callkeep';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { callKitDisplay } from './callkit_service';
