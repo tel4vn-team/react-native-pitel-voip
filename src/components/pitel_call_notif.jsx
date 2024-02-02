@@ -253,7 +253,7 @@ export const PitelCallNotif = ({
   };
 
   const onAnswerCallActionPitel = async (data) => {
-    let { callUUID } = data;
+    let callUUID = data?.callUUID ?? '';
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
     setCallID(callUUID);

@@ -48,6 +48,7 @@ export const PitelCallOut = ({
 }) => {
   useEffect(() => {
     if (registerState == 'REGISTER' && isCallOut) {
+      InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
       pitelSDK.call(callToNumber);
       onCreated();
     }
@@ -56,7 +57,6 @@ export const PitelCallOut = ({
   const callOutgoing = () => {
     registerFunc();
     setIsCallOut(true);
-    InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
   };
 
   return (
