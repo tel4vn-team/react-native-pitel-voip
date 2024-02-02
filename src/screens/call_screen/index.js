@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
+  Image,
 } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import RNCallKeep from 'react-native-callkeep';
@@ -12,12 +13,6 @@ import styles from './styles';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
 
-import MicroOn from '../../assets/svgs/mic_on.svg';
-import MicroOff from '../../assets/svgs/mic_off.svg';
-import SpeakerHigh from '../../assets/svgs/speaker_high.svg';
-import SpeakerLow from '../../assets/svgs/speaker_low.svg';
-import Hangup from '../../assets/svgs/hangup.svg';
-import Call from '../../assets/svgs/call.svg';
 import { Clock } from '../../components/clock/clock';
 import { AudioModal } from '../../components/modals/audio_modal';
 
@@ -75,7 +70,19 @@ export const PitelCallKit = ({
       <View style={styles.groupBtnAction}>
         <View style={styles.advancedBtnGroup}>
           <IconTextButton
-            icon={mute ? <MicroOff /> : <MicroOn />}
+            icon={
+              mute ? (
+                <Image
+                  source={require('../../assets/icons/micro-slash.png')}
+                  style={{ width: 24, height: 24 }}
+                />
+              ) : (
+                <Image
+                  source={require('../../assets/icons/micro.png')}
+                  style={{ width: 24, height: 24 }}
+                />
+              )
+            }
             title={'Mute'}
             onPress={() => {
               setMute(!mute);
@@ -87,7 +94,12 @@ export const PitelCallKit = ({
             }}
           />
           <IconTextButton
-            icon={<SpeakerHigh />}
+            icon={
+              <Image
+                source={require('../../assets/icons/volume.png')}
+                style={{ width: 24, height: 24 }}
+              />
+            }
             title={'Speaker'}
             onPress={async () => {
               setSpeaker(!speaker);
@@ -96,7 +108,12 @@ export const PitelCallKit = ({
           />
         </View>
         <IconButton
-          icon={<Hangup />}
+          icon={
+            <Image
+              source={require('../../assets/icons/hangup.png')}
+              style={{ width: 29, height: 29 }}
+            />
+          }
           onPress={() => {
             InCallManager.stop();
             onHangup();
