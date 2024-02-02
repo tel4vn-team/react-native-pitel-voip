@@ -42,12 +42,21 @@ export const PitelCallOut = ({
   callToNumber,
   isCallOut,
   setIsCallOut,
+  registerFunc,
+  registerState,
+  onCreated,
 }) => {
+  useEffect(() => {
+    if (registerState == 'REGISTER' && isCallOut) {
+      pitelSDK.call(callToNumber);
+      onCreated();
+    }
+  }, [registerState, isCallOut]);
+
   const callOutgoing = () => {
+    registerFunc();
     setIsCallOut(true);
     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
-
-    pitelSDK.call(callToNumber);
   };
 
   return (

@@ -19,7 +19,6 @@ export const PitelCallNotif = ({
   callkitSetup,
   children,
   onIOSToken,
-  isLogin,
 
   // Callkit listener
   onNativeCall,
@@ -30,18 +29,18 @@ export const PitelCallNotif = ({
   onDTMF,
 
   //! Config
-  sdkOptions,
   registerFunc,
   isCallOut,
   setIsCallOut,
   setCallID,
+  sdkOptions,
+  isLogin,
 
   pitelSDK,
   setCallState,
   callState,
   onReceived,
   onHangup,
-  onCreated,
 }) => {
   const [acceptCall, setAcceptCall] = useState(false);
   const [cancelCall, setCancelCall] = useState(false);
@@ -67,6 +66,7 @@ export const PitelCallNotif = ({
       case 'CALL_HANGUP':
         setStartClock(false);
         setEnableHangup(false);
+        setIsCallOut(false);
         onHangup();
         setCallState('REGISTER');
         if (Platform.OS === 'android') {
@@ -75,9 +75,6 @@ export const PitelCallNotif = ({
         InCallManager.stop();
         break;
       case 'CALL_CREATED':
-        if (isCallOut) {
-          onCreated();
-        }
         break;
       case 'CALL_ANSWERED':
         setEnableHangup(true);
@@ -125,6 +122,7 @@ export const PitelCallNotif = ({
     }
   }, [cancelCall]);
 
+  //! 1.0.6
   useEffect(() => {
     checkIsCall();
   }, [sdkOptions, isLogin]);
@@ -151,20 +149,20 @@ export const PitelCallNotif = ({
     }
   };
 
-  //! Register when appstate active
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      (nextAppState) => {
-        if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
-          checkIsCall();
-        }
-      }
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, [isLogin, acceptCall, sdkOptions]);
+  //! 1.0.6 Register when appstate active
+  // useEffect(() => {
+  //   const appStateListener = AppState.addEventListener(
+  //     'change',
+  //     (nextAppState) => {
+  //       if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
+  //         checkIsCall();
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     appStateListener?.remove();
+  //   };
+  // }, [isLogin, acceptCall, sdkOptions]);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {
