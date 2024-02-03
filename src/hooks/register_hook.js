@@ -7,6 +7,9 @@ export const useRegister = ({ sdkOptions, extension, setPitelSDK }) => {
   const [registerState, setRegisterState] = useState('UNREGISTER');
 
   useEffect(() => {
+    if (callState === 'REGISTERED') {
+      setRegisterState('REGISTERED');
+    }
     if (callState === 'REGISTER') {
       setRegisterState('REGISTER');
     }

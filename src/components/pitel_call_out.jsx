@@ -55,7 +55,12 @@ export const PitelCallOut = ({
   }, [registerState, isCallOut]);
 
   const callOutgoing = () => {
-    registerFunc();
+    console.log('===========registerState===1========', registerState);
+    if (registerState != 'REGISTER') {
+      pitelSDK.unregister();
+      console.log('===========1===========');
+      registerFunc();
+    }
     setIsCallOut(true);
   };
 
