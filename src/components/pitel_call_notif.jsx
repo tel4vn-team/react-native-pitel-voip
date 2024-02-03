@@ -158,7 +158,9 @@ export const PitelCallNotif = ({
           setCallState('UNREGISTER');
         }
         if (nextAppState == 'inactive') {
-          pitelSDK.unregister();
+          if (pitelSDK != undefined) {
+            pitelSDK.unregister();
+          }
         }
       }
     );
