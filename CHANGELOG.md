@@ -2,6 +2,11 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.0.19 - 2024-02-5
+
+- Check display callkit android.
+- Re-register when open app.
+
 ## 1.0.3 - 2024-01-26
 
 - Fixed some bugs.

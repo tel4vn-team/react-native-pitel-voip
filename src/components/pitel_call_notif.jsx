@@ -14,6 +14,10 @@ import InCallManager from 'react-native-incall-manager';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PitelSDKContext } from '../context/pitel_sdk_context';
+import {
+  setCallDisplay,
+  getCallDisplay,
+} from '../notification/callkit_service';
 
 export const PitelCallNotif = ({
   callkitSetup,
@@ -132,6 +136,9 @@ export const PitelCallNotif = ({
   const checkIsCall = async () => {
     if (isLogin == 'FALSE') return;
     if (Platform.OS == 'android') {
+      const callDisplay = getCallDisplay();
+      console.log('===========callDisplay===========', callDisplay);
+      if (callDisplay) return;
       if (sdkOptions) {
         if (sdkOptions.contactParams['pn-prid'] !== '') {
           registerFunc();
@@ -232,6 +239,7 @@ export const PitelCallNotif = ({
     let { callUUID } = data;
     setAcceptCall(false);
     setCancelCall(true);
+    setCallDisplay(false);
     RNCallKeep.endCall(callUUID);
   };
   const onToggleMutePitel = (data) => {
@@ -255,9 +263,10 @@ export const PitelCallNotif = ({
   };
 
   const onAnswerCallActionPitel = async (data) => {
-    let { callUUID } = data;
+    let callUUID = data?.callUUID ?? '';
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
+    setCallDisplay(false);
     setCallID(callUUID);
     if (onAnswerCallAction) {
       onAnswerCallAction(data);

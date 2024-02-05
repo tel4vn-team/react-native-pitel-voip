@@ -11,3 +11,11 @@ export const callKitDisplay = (number: string, uuid: string) => {
   console.log(`[displayIncomingCall] ${format(callUUID)}, number: ${number}`);
   RNCallKeep.displayIncomingCall(callUUID, number, number, 'number', false);
 };
+
+let callDisplay = false;
+
+export const setCallDisplay = (value: boolean) => {
+  callDisplay = value;
+};
+
+export const getCallDisplay = () => callDisplay;

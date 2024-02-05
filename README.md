@@ -36,7 +36,7 @@ yarn add react-native-pitel-voip
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-svg@13.9.0 react-native-voip-push-notification@3.3.1 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
+yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.1 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
 ```
 
 3. Pod install
@@ -46,17 +46,10 @@ cd ios
 pod install
 ```
 
-4. Installing react-native-svg-transformer
-   Follow document & setup [react-native-svg-transformer](https://github.com/kristerkari/react-native-svg-transformer)
-
-```
-yarn add --dev react-native-svg-transformer
-```
-
-5. Pushkit/ Push notification - Received VoIP and Wake app from Terminated State.
+4. Pushkit/ Push notification - Received VoIP and Wake app from Terminated State.
    Note Please check [PUSH_NOTIF.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/%20PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
 
-6. Configure Project
+5. Configure Project
 
 #### Android:
 
