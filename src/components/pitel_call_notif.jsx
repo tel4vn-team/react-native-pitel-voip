@@ -149,25 +149,40 @@ export const PitelCallNotif = ({
     }
   };
 
+  // //! 1.0.6 Register when appstate active
+  // useEffect(() => {
+  //   const appStateListener = AppState.addEventListener(
+  //     'change',
+  //     (nextAppState) => {
+  //       if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
+  //         checkIsCall();
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     appStateListener?.remove();
+  //   };
+  // }, [isLogin, acceptCall, sdkOptions]);
+
   //! 1.0.6 Register when appstate active
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      (nextAppState) => {
-        if (nextAppState == 'active') {
-          setCallState('UNREGISTER');
-        }
-        if (nextAppState == 'inactive') {
-          if (pitelSDK != undefined) {
-            pitelSDK.unregister();
-          }
-        }
-      }
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const appStateListener = AppState.addEventListener(
+  //     'change',
+  //     (nextAppState) => {
+  //       if (nextAppState == 'active') {
+  //         setCallState('UNREGISTER');
+  //       }
+  //       if (nextAppState == 'inactive') {
+  //         if (pitelSDK != undefined) {
+  //           pitelSDK.unregister();
+  //         }
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     appStateListener?.remove();
+  //   };
+  // }, []);
 
   const pushkit = () => {
     VoipPushNotification.addEventListener('register', (token) => {

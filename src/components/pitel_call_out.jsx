@@ -6,7 +6,13 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  AppState,
+} from 'react-native';
 
 import {
   mediaDevices,
@@ -46,6 +52,23 @@ export const PitelCallOut = ({
   registerState,
   onCreated,
 }) => {
+  const [recall, setRecall] = useState(false);
+
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      (nextAppState) => {
+        console.log('===========nextAppState===========', nextAppState);
+        if (nextAppState == 'active') {
+          setRecall(true);
+        }
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, []);
+
   useEffect(() => {
     if (registerState == 'REGISTER' && isCallOut) {
       InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
@@ -56,10 +79,20 @@ export const PitelCallOut = ({
 
   const callOutgoing = () => {
     if (registerState != 'REGISTER') {
-      registerFunc();
+      if (recall) {
+        registerFunc();
+        setRecall(false);
+      }
+      setIsCallOut(true);
     }
-    setIsCallOut(true);
   };
+
+  // const callOutgoing = () => {
+  //   pitelSDK.call(callToNumber);
+  //   onCreated();
+  //   setIsCallOut(true);
+  //   InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+  // };
 
   return (
     <TouchableOpacity
