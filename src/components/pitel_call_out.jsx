@@ -52,47 +52,47 @@ export const PitelCallOut = ({
   registerState,
   onCreated,
 }) => {
-  const [recall, setRecall] = useState(false);
+  // const [recall, setRecall] = useState(false);
 
-  useEffect(() => {
-    const appStateListener = AppState.addEventListener(
-      'change',
-      (nextAppState) => {
-        console.log('===========nextAppState===========', nextAppState);
-        if (nextAppState == 'active') {
-          setRecall(true);
-        }
-      }
-    );
-    return () => {
-      appStateListener?.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const appStateListener = AppState.addEventListener(
+  //     'change',
+  //     (nextAppState) => {
+  //       console.log('===========nextAppState===========', nextAppState);
+  //       if (nextAppState == 'active') {
+  //         setRecall(true);
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     appStateListener?.remove();
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    if (registerState == 'REGISTER' && isCallOut) {
-      InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
-      pitelSDK.call(callToNumber);
-      onCreated();
-    }
-  }, [registerState, isCallOut]);
-
-  const callOutgoing = () => {
-    if (registerState != 'REGISTER') {
-      if (recall) {
-        registerFunc();
-        setRecall(false);
-      }
-      setIsCallOut(true);
-    }
-  };
+  // useEffect(() => {
+  //   if (registerState == 'REGISTER' && isCallOut) {
+  //     InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+  //     pitelSDK.call(callToNumber);
+  //     onCreated();
+  //   }
+  // }, [registerState, isCallOut]);
 
   // const callOutgoing = () => {
-  //   pitelSDK.call(callToNumber);
-  //   onCreated();
-  //   setIsCallOut(true);
-  //   InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+  //   if (registerState != 'REGISTER') {
+  //     if (recall) {
+  //       registerFunc();
+  //       setRecall(false);
+  //     }
+  //     setIsCallOut(true);
+  //   }
   // };
+
+  const callOutgoing = () => {
+    pitelSDK.call(callToNumber);
+    onCreated();
+    setIsCallOut(true);
+    InCallManager.start({ media: 'audio', ringback: '_DEFAULT_' });
+  };
 
   return (
     <TouchableOpacity

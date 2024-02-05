@@ -5,7 +5,7 @@ import { AppState, Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { callKitDisplay } from './callkit_service';
+import { callKitDisplay, setCallDisplay } from './callkit_service';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -41,6 +41,7 @@ function handleNotification(
         const phoneNumber = remoteMessage.data.nameCaller ?? '';
         const uuid = remoteMessage.data.uuid ?? '';
         callKitDisplay(phoneNumber, uuid);
+        setCallDisplay(true);
       }
       break;
     case 'CANCEL_ALL':

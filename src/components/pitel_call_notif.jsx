@@ -14,6 +14,10 @@ import InCallManager from 'react-native-incall-manager';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PitelSDKContext } from '../context/pitel_sdk_context';
+import {
+  setCallDisplay,
+  getCallDisplay,
+} from '../notification/callkit_service';
 
 export const PitelCallNotif = ({
   callkitSetup,
@@ -130,6 +134,9 @@ export const PitelCallNotif = ({
   const checkIsCall = async () => {
     if (isLogin == 'FALSE') return;
     if (Platform.OS == 'android') {
+      const callDisplay = getCallDisplay();
+      console.log('===========callDisplay===========', callDisplay);
+      if (callDisplay) return;
       if (sdkOptions) {
         if (sdkOptions.contactParams['pn-prid'] !== '') {
           registerFunc();
@@ -150,19 +157,19 @@ export const PitelCallNotif = ({
   };
 
   // //! 1.0.6 Register when appstate active
-  // useEffect(() => {
-  //   const appStateListener = AppState.addEventListener(
-  //     'change',
-  //     (nextAppState) => {
-  //       if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
-  //         checkIsCall();
-  //       }
-  //     }
-  //   );
-  //   return () => {
-  //     appStateListener?.remove();
-  //   };
-  // }, [isLogin, acceptCall, sdkOptions]);
+  useEffect(() => {
+    const appStateListener = AppState.addEventListener(
+      'change',
+      (nextAppState) => {
+        if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
+          checkIsCall();
+        }
+      }
+    );
+    return () => {
+      appStateListener?.remove();
+    };
+  }, [isLogin, acceptCall, sdkOptions]);
 
   //! 1.0.6 Register when appstate active
   // useEffect(() => {
@@ -276,6 +283,7 @@ export const PitelCallNotif = ({
     let callUUID = data?.callUUID ?? '';
     RNCallKeep.setCurrentCallActive(callUUID);
     setAcceptCall(true);
+    setCallDisplay(false);
     setCallID(callUUID);
     if (onAnswerCallAction) {
       onAnswerCallAction(data);
