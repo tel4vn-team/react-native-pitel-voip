@@ -2,6 +2,10 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.0.22 - 2024-02-21
+
+- Example for use PitelCallOut other screen.
+
 ## 1.0.19 - 2024-02-5
 
 - Check display callkit android.

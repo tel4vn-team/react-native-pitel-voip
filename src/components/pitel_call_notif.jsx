@@ -136,9 +136,6 @@ export const PitelCallNotif = ({
   const checkIsCall = async () => {
     if (isLogin == 'FALSE') return;
     if (Platform.OS == 'android') {
-      const callDisplay = getCallDisplay();
-      console.log('===========callDisplay===========', callDisplay);
-      if (callDisplay) return;
       if (sdkOptions) {
         if (sdkOptions.contactParams['pn-prid'] !== '') {
           registerFunc();
@@ -164,7 +161,14 @@ export const PitelCallNotif = ({
       'change',
       (nextAppState) => {
         if (nextAppState == 'active' && !acceptCall && isLogin == 'TRUE') {
-          checkIsCall();
+          if (Platform.OS == 'ios') {
+            checkIsCall();
+          }
+          if (Platform.OS == 'android') {
+            const callDisplay = getCallDisplay();
+            if (callDisplay) return;
+            checkIsCall();
+          }
         }
       }
     );
