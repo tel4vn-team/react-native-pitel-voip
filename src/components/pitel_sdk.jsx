@@ -13,6 +13,7 @@ export const PitelSDK = ({
   setSdkOptions,
   iosPushToken,
   setIOSPushToken,
+  reload = false,
 }) => {
   // useState & useRegister
   const [deviceToken, setDeviceToken] = useState('');
@@ -29,7 +30,7 @@ export const PitelSDK = ({
     if (Platform.OS === 'ios' && iosPushToken.length !== 0) {
       initSdkOption();
     }
-  }, [iosPushToken]);
+  }, [iosPushToken, reload]);
 
   const initSdkOption = async () => {
     const fcmToken = await getFcmToken();
