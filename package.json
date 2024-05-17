@@ -1,6 +1,6 @@
 {
   "name": "react-native-pitel-voip",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "This is package support for voip call",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

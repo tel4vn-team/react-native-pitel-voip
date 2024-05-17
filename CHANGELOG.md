@@ -2,6 +2,10 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.0.27 - 2024-05-17
+
+- Refactore MediaStream.
+
 ## 1.0.22 - 2024-02-21
 
 - Example for use PitelCallOut other screen.
