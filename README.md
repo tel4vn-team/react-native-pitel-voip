@@ -2,7 +2,7 @@
 
 # Integrate Voip call to your project
 
-[![](src/assets/images/pitel-logo.png)](https://documents.tel4vn.com/)
+[![](src/assets/images/pitel-logo.png)](https://documents.tel4vn.com/pitel_app)
 
 `react-native-pitel-voip` is package support for voip call. Please contact [pitel](https://www.pitel.vn/)
 
