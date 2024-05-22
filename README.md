@@ -2,7 +2,7 @@
 
 # Integrate Voip call to your project
 
-[![N|Solid](https://documents.tel4vn.com/img/pitel-logo.png)](https://documents.tel4vn.com/)
+[![](src/assets/images/pitel-logo.png)](https://documents.tel4vn.com/)
 
 `react-native-pitel-voip` is package support for voip call. Please contact [pitel](https://www.pitel.vn/)
 
@@ -36,7 +36,7 @@ yarn add react-native-pitel-voip
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.1 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
+yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
 ```
 
 3. Pod install
@@ -53,13 +53,14 @@ pod install
 
 #### Android:
 
-- In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/android/app/src/main/AndroidManifest.xml)
+- In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/android/app/src/main/AndroidManifest.xml)
 
 ```xml
  <manifest...>
     ...
     // Request permission
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -68,11 +69,27 @@ pod install
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
     ...
     // show when lock screen
     <application
     ...
     >
+         <service android:name="io.wazo.callkeep.VoiceConnectionService"
+        android:label="Wazo"
+        android:exported="true"
+        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        android:foregroundServiceType="camera|microphone"
+        >
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
         <activity
             ...
             android:showOnLockScreen="true"
@@ -80,6 +97,16 @@ pod install
             android:turnScreenOn="true"
         >
             ...
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data android:scheme="mychat" />
+            </intent-filter>
         </activity>
     </application>
  </manifest>
@@ -88,11 +115,37 @@ pod install
 - In file `android/gradle.properties`
 
 ```
-android.enableDexingArtifactTransform.desugaring=false
+android.useFullClasspathForDexingTransform = true
+```
+
+- In file `android/app/build.gradle`.
+
+```
+apply plugin: 'com.google.gms.google-services'
+```
+
+- In file `android/build.gradle`.
+
+```
+buildscript {
+    ext {
+        ...
+        minSdkVersion = 24
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+    }
+    ...
+    dependencies {
+        ...
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
 ```
 
 #### IOS
 
+- Open Xcode -> Select your project -> Select tab General -> Frameworks, Libraries, and Embedded Content -> Add Callkit.framework
+  ![CallKit framework](src/assets/images/callkit_framework.png)
 - Request permission in file `Info.plist`
 
 ```
@@ -100,8 +153,11 @@ android.enableDexingArtifactTransform.desugaring=false
 <string>Need Bluetooth access for voip call</string>
 <key>NSBluetoothPeripheralUsageDescription</key>
 <string>Need Bluetooth access for voip call</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string></string>
 <key>NSMicrophoneUsageDescription</key>
 <string>Need microphone access for voip call</string>
+<key>UIBackgroundModes</key>
 <array>
 	<string>fetch</string>
 	<string>processing</string>
@@ -113,49 +169,69 @@ android.enableDexingArtifactTransform.desugaring=false
 - Make sure platform ios `12.0` in `Podfile`
 
 ```js
-...
-require_relative '../node_modules/react-native-permissions/scripts/setup'
-...
+# Resolve react_native_pods.rb with node to allow for hoisting
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+# Use it to require both react-native's and this package's scripts:
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
 setup_permissions(['Bluetooth'])
-...
-target 'rn_pitel_demo' do
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+target 'rnpiteldemo' do
   config = use_native_modules!
 
-  // Add this
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
 
-  ...
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
+
+  target 'rnpiteldemoTests' do
+    inherit! :complete
+    # Pods for testing
+  end
 
   post_install do |installer|
+    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
-      # Set `mac_catalyst_enabled` to `true` in order to apply patches
-      # necessary for Mac Catalyst builds
-      :mac_catalyst_enabled => false
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
     )
-    # NOTE: Change IPHONEOS_DEPLOYMENT_TARGET to 12.4.
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.4'
-      end
-    end
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
+end
 ```
 
 ## Example
 
-Please checkout repo github to get [example](https://github.com/anhquangmobile/rn-pitel-demo)
+Please checkout repo github to get [example](https://github.com/anhquangmobile/react-native-pitel-demo)
 
 ## Usage
 
-- In file [index.js](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/index.js)
+- In file [index.js](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/index.js)
 
 ```js
 import { NotificationBackground } from 'react-native-pitel-voip'; // Add this line
@@ -183,7 +259,7 @@ NotificationBackground(options); // Add this line
 AppRegistry.registerComponent(appName, () => App);
 ```
 
-- In file [App.jsx](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/App.jsx)
+- In file [App.jsx](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/App.jsx)
 
 ```js
 // Import this
@@ -203,7 +279,7 @@ export default function App() {
 ```
 
 - In file `src/screens/home_screen/index.js`
-  Please follow [example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/src/screens/home_screen/index.js)
+  Please follow [example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/src/screens/home_screen/index.js)
 
 > Config sdkOption
 
@@ -280,7 +356,7 @@ return (
 | setSdkOptions  | set sdkOption when your extension login success | Function | Required |
 
 - In file `src/screens/home_screen/home_screen.js`
-  [Example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/src/screens/home_screen/home_screen.js)
+  [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/src/screens/home_screen/home_screen.js)
 
 ```js
 // Register your extension to PBX
@@ -339,7 +415,7 @@ return (
 | onHangup     | set hang up                                      | () => void | Required |
 | onIOSToken   | ios voip push notification                       | String     | Required |
 
-- In file `src/screens/call_screen/index.js` [Example](https://github.com/anhquangmobile/rn-pitel-demo/blob/main/src/screens/call_screen/index.js)
+- In file `src/screens/call_screen/index.js` [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/src/screens/call_screen/index.js)
 
 ```js
 import React, { useState, useContext } from 'react';
@@ -359,6 +435,7 @@ export const CallScreen = ({ route, navigation }) => {
       phoneNumber={phoneNumber}
       direction={direction}
       callID={callID}
+      enable={true}
       onHangup={() => {
         pitelSDK.hangup();
       }}
@@ -367,13 +444,14 @@ export const CallScreen = ({ route, navigation }) => {
 };
 ```
 
-| Prop      | Description                           | Type     | Default  |
-| --------- | ------------------------------------- | -------- | -------- |
-| pitelSDK  | pitelSDK when extension login success | Object   | Required |
-| callState | call status                           | String   | Required |
-| direction | call direction                        | String   | Required |
-| callID    | incoming call id                      | String   | Required |
-| onHangup  | hang up when end call                 | Function | Required |
+| Prop      | Description                            | Type     | Default  |
+| --------- | -------------------------------------- | -------- | -------- |
+| enable    | enable = true to enable call out going | bool     | true     |
+| pitelSDK  | pitelSDK when extension login success  | Object   | Required |
+| callState | call status                            | String   | Required |
+| direction | call direction                         | String   | Required |
+| callID    | incoming call id                       | String   | Required |
+| onHangup  | hang up when end call                  | Function | Required |
 
 ## How to test
 

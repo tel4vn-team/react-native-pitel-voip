@@ -2,9 +2,12 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
-## 1.0.27 - 2024-05-17
+## 1.0.28 - 2024-05-22
 
-- Refactore MediaStream.
+- Refactor MediaStream.
+- Support React native 0.74.x.
+- Default enable = true in PitelCallOut.
+- Update new docs.
 
 ## 1.0.22 - 2024-02-21
 

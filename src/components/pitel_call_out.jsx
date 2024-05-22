@@ -21,7 +21,7 @@ export const PitelCallOut = ({
   callToNumber,
   setIsCallOut,
   onPress,
-  enable,
+  enable = true,
 }) => {
   const callOutgoing = () => {
     if (enable) {
