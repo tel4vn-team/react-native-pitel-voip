@@ -109,11 +109,29 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
   ![push_img_4](src/assets/push_img/push_img_4.png)
 - Download & copy file google_service.json -> replace file google_service.json in path: `android/app/google_service.json`
 
-- Go to Project Setting → Cloud Messaging → Enable Cloud Messaging API (Legacy)
-  ![push_img_3](src/assets/push_img/push_img_3.png)
+##### Firebase Project
+
+- Go to Project settings > Cloud Messaging and select Manage API in Google Cloud Console to open Google Cloud Console.
+  ![fcm1](src/assets/push_img/fcm1.png)
+- Go to API Library using the back button as shown below.
+  ![fcm2](src/assets/push_img/fcm2.png)
+- Search "cloud messaging" -> Select "Cloud Messaging"
+  ![fcm3](src/assets/push_img/fcm3.png)
+- Click Enable to start using the Cloud Messaging API.
+  ![fcm4](src/assets/push_img/fcm4.png)
+
+##### Service Account
+
+- Go to [sevice account](https://console.cloud.google.com/apis/credentials)
+- In tab "Credentials", scroll to "Service Accounts", click button edit with name "firebase-adminsdk".
+  ![fcm5](src/assets/push_img/fcm5.png)
+- Choose tab KEYS, click "Add key" -> "Create new key" and download json file.
+  ![fcm6](src/assets/push_img/fcm6.png)
 
 > **Note**
-> After complete all step Setup. Please send information to dev of Tel4vn in [here](https://portal-sdk.tel4vn.com/)
+>
+> - After complete all step Setup. Please send information to dev of Tel4vn in [here](https://portal-sdk.tel4vn.com/)
+> - Please check [PORTAL_GUIDE.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/PUSH_NOTIF.md) to setup your config.
 
 # Installation (your project)
 
@@ -137,29 +155,66 @@ Your app bundleId: com.pitel.uikit.demo
 Voip push Bundle Id: com.pitel.uikit.demo.voip
 ```
 
-- IOS
+### IOS
 
 ![push_img_1](src/assets/push_img/push_img_1.png)
 
-- Android: using above app or test from Postman
+### Android: using above app or test from Postman
+
+#### How to get access token?
+
+- Go to https://developers.google.com/oauthplayground/
+- Navigate to Step 1 (Select & authorize APIs) → Select “Firebase Cloud Messaging API v1” and click “Authorize API’s” button.
+  ![step_1](src/assets/push_img/gg_oauth_step_1.png)
+- You will be redirected to Authentication and needs permission for Google OAuth 2.0 Playground to view and manage the GCP services. Click “Allow” button.
+- Navigate to Step 2 (Exchange authorization code for tokens) → Click “Exchange authorization code for tokens” button.
+  This will generate “Refresh token” and “Access token”.
+  ![step_2](src/assets/push_img/gg_oauth_step_2.png)
+
+> Note:
+>
+> - project_id: this is your firebase project id.
+> - fcm_token: replace your fcm token, get from your device.
+> - access_token: get access token from oauth playground above.
 
 cURL
 
-```dart
-curl --location 'https://fcm.googleapis.com/fcm/send' \
+```js
+curl --location 'https://fcm.googleapis.com/v1/projects/${project_id}/messages:send' \
 --header 'Content-Type: application/json' \
---header 'Authorization: key=${server_key}' \
+--header 'Authorization: Bearer ${access_token}' \
 --data '{
-    "registration_ids": [${device_token}],
-    "data":{
-        "uuid": "call_id",
-        "nameCaller": "Anh Quang",
-        "avatar": "Anh Quang",
-        "phoneNumber": "0341111111",
-        "appName": "Pitel Connnect",
-        "callType": "CALL"
-    },
-    "content_available": true,
-    "priority": "high"
+    "message": {
+        "notification": {
+            "title": "FCM Message",
+            "body": "This is an FCM Message"
+        },
+        "data": {
+            "uuid": "77712f3-9b56-4e26-96ea-382ea1206477",
+            "nameCaller": "Anh Quang",
+            "avatar": "Anh Quang",
+            "phoneNumber": "0375624006",
+            "appName": "Pitel Connnect",
+            "callType": "CALL"
+
+        },
+        "apns": {
+            "headers": {
+                "apns-priority": "10",
+
+                "sound": ""
+            },
+            "payload": {
+                "aps": {
+                    "mutable-content": 1,
+                    "content-available": 1
+                }
+            }
+        },
+        "android": {
+            "priority": "high"
+        },
+        "token": "${fcm_token}"
+    }
 }'
 ```
