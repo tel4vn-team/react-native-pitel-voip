@@ -290,12 +290,14 @@ const appId = `${BUNDLE_ID}`;
 const domainUrl = `${DOMAIN}`;
 
 const sdkOptionsInit = {
-  sipDomain: `${DOMAIN}:${PORT}`,
-  wssServer: `${WSS_URL}`,
-  sipPassword: sipPass,
-  bundleId: appId, // Bundle id for IOS
-  packageId: appId, // Package id for Android
-  teamId: `${TEAM_ID}`, // Team id of Apple developer account
+    sipDomain: `${DOMAIN}`,
+    port: `${PORT}`,
+    extension: ext,
+    wssServer: `${WSS_URL}`,
+    sipPassword: sipPass,
+    bundleId: appId, // Bundle id for IOS
+    packageId: appId, // Package id for Android
+    teamId: `${TEAM_ID}`, 
 };
 ```
 

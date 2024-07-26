@@ -123,16 +123,16 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
 ##### Service Account
 
 - Go to Project settings > Cloud Messaging and select Manage API in Google Cloud Console to open Google Cloud Console.
-  ![fcm1](assets/push_img/fcm1.png)
+  ![fcm1](src/assets/push_img/fcm1.png)
 - In tab "Credentials", scroll to "Service Accounts", click button edit with name "firebase-adminsdk".
-  ![fcm7](assets/push_img/fcm7.png)
+  ![fcm7](src/assets/push_img/fcm7.png)
 - Choose tab KEYS, click "Add key" -> "Create new key" and download json file.
-  ![fcm8](assets/push_img/fcm8.png)
+  ![fcm8](src/assets/push_img/fcm8.png)
 
 > **Note**
 >
 > - After complete all step Setup. Please send information to dev of Tel4vn in [here](https://portal-sdk.tel4vn.com/)
-> - Please check [PORTAL_GUIDE.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/PUSH_NOTIF.md) to setup your config.
+> - Please check [PORTAL_GUIDE.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/PORTAL_GUIDE.md) to setup your config.
 
 # Installation (your project)
 
