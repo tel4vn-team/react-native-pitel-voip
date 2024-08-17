@@ -9,6 +9,7 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
+import RNNotificationCall from 'react-native-full-screen-notification-incoming-call';
 import { Platform, AppState } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import {
@@ -23,6 +24,12 @@ import {
 
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  check,
+  PERMISSIONS,
+  RESULTS,
+  requestMultiple,
+} from 'react-native-permissions';
 import { PitelSDKContext } from '../context/pitel_sdk_context';
 import {
   setCallDisplay,
@@ -93,6 +100,11 @@ export const PitelCallNotif = ({
       case 'CALL_HANGUP':
         setStartClock(false);
         setEnableHangup(false);
+        if (Platform.OS == 'ios') {
+          RNCallKeep.endAllCalls();
+        } else {
+          RNNotificationCall.declineCall();
+        }
         onHangup();
         setCallState('REGISTER');
         if (Platform.OS === 'android') {
@@ -127,7 +139,11 @@ export const PitelCallNotif = ({
 
   // Init
   useEffect(() => {
-    initializeCallKeep();
+    if (Platform.OS == 'ios') {
+      initializeCallKeep();
+    } else {
+      initIncomingCallAndroid();
+    }
     if (Platform.OS == 'ios') {
       pushkit();
     }
@@ -228,6 +244,40 @@ export const PitelCallNotif = ({
       }
     });
     VoipPushNotification.registerVoipToken();
+  };
+
+  const requestAndroidPermission = async () => {
+    const granted = await requestMultiple([
+      PERMISSIONS.ANDROID.READ_PHONE_NUMBERS,
+      PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+    ]);
+    if (granted[PERMISSIONS.ANDROID.READ_PHONE_NUMBERS] !== RESULTS.GRANTED)
+      console.warn('[Pitel Logs]: READ_PHONE_NUMBERS not granted permission');
+    return;
+    if (granted[PERMISSIONS.ANDROID.POST_NOTIFICATIONS] !== RESULTS.GRANTED)
+      console.warn('[Pitel Logs]: POST_NOTIFICATIONS not granted permission');
+    return;
+  };
+  const initIncomingCallAndroid = async () => {
+    await requestAndroidPermission();
+    RNNotificationCall.addEventListener('endCall', (data) => {
+      const { callUUID } = data;
+      if (onEndCallAction) {
+        onEndCallAction(data);
+      }
+      setAcceptCall(false);
+      setCancelCall(true);
+      setCallDisplay(false);
+    });
+    RNNotificationCall.addEventListener('answer', (data) => {
+      const { callUUID } = data;
+      setAcceptCall(true);
+      setCallDisplay(false);
+      setCallID(callUUID);
+      if (onAnswerCallAction) {
+        onAnswerCallAction(data);
+      }
+    });
   };
 
   const initializeCallKeep = async () => {

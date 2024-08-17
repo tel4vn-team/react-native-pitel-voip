@@ -4,6 +4,7 @@ import messaging, {
 import { AppState, Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNNotificationCall from 'react-native-full-screen-notification-incoming-call';
 
 import { callKitDisplay, setCallDisplay } from './callkit_service';
 
@@ -47,6 +48,7 @@ function handleNotification(
     case 'CANCEL_ALL':
     case 'CANCEL_GROUP':
       RNCallKeep.endAllCalls();
+      RNNotificationCall.hideNotification();
       setCallDisplay(false);
       break;
   }
@@ -81,14 +83,9 @@ export const NotificationListener = () => {
   );
 };
 
-export const NotificationBackground = (options: any) => {
+export const NotificationBackground = () => {
   messaging().setBackgroundMessageHandler(
     async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      if (Platform.OS === 'android') {
-        RNCallKeep.registerPhoneAccount(options);
-        RNCallKeep.registerAndroidEvents();
-        RNCallKeep.setAvailable(true);
-      }
       console.log('Message handled in the background!', remoteMessage);
 
       handleNotification(remoteMessage);
@@ -96,15 +93,9 @@ export const NotificationBackground = (options: any) => {
   );
 
   if (AppState.currentState != 'active' && Platform.OS == 'android') {
-    RNCallKeep.addEventListener('answerCall', async (data) => {
-      let { callUUID } = data;
-      RNCallKeep.endCall(callUUID);
-      for (var i = 0; i < 10; i++) {
-        RNCallKeep.backToForeground();
-      }
+    RNNotificationCall.addEventListener('answer', async () => {
       await AsyncStorage.setItem('ACCEPT_CALL', 'TRUE');
-
-      RNCallKeep.removeEventListener('answerCall');
+      RNNotificationCall.backToApp();
     });
   }
 };
