@@ -8416,10 +8416,10 @@ react-native-builder-bob@^0.20.4:
   optionalDependencies:
     jetifier "^2.0.0"
 
-react-native-callkeep@^4.3.9:
-  version "4.3.9"
-  resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.9.tgz#f0250846b55b00c6d2be07525fc61f8fa28c540d"
-  integrity sha512-yTYrf8yifvozSrCNDfTBf3cAm2SIRiRoIsVh6HzAN0vrhXvG8EsaGmkCw867zZwCxUAQPFjM26sy+tkpNA4gUA==
+react-native-callkeep@^4.3.13:
+  version "4.3.14"
+  resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.14.tgz#a1f5c0d1d254c4af984dd13b6915a4c9c9f9a415"
+  integrity sha512-DtvJwwTxDLMWgkXLpXm/I/i12khya7nssTXVgXaNyvooClqU+af/b18rXEPhUfd0Wf8uOxONgUIrk5f3ZoMCaA==
 
 react-native-codegen@^0.71.5:
   version "0.71.5"
