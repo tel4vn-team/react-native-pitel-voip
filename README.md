@@ -36,7 +36,7 @@ yarn add react-native-pitel-voip
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
+yarn add react-native-callkeep@4.3.13 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
 ```
 
 3. Pod install
@@ -290,14 +290,14 @@ const appId = `${BUNDLE_ID}`;
 const domainUrl = `${DOMAIN}`;
 
 const sdkOptionsInit = {
-    sipDomain: `${DOMAIN}`,
-    port: `${PORT}`,
-    extension: ext,
-    wssServer: `${WSS_URL}`,
-    sipPassword: sipPass,
-    bundleId: appId, // Bundle id for IOS
-    packageId: appId, // Package id for Android
-    teamId: `${TEAM_ID}`, 
+  sipDomain: `${DOMAIN}`,
+  port: `${PORT}`,
+  extension: ext,
+  wssServer: `${WSS_URL}`,
+  sipPassword: sipPass,
+  bundleId: appId, // Bundle id for IOS
+  packageId: appId, // Package id for Android
+  teamId: `${TEAM_ID}`,
 };
 ```
 
