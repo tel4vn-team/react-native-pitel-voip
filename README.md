@@ -2,19 +2,19 @@
 
 # Integrate Voip call to your project
 
-[![](assets/images/pitel-logo.png)](https://documents.tel4vn.com/pitel_app)
+[![](src/assets/images/pitel-logo.png)](https://documents.tel4vn.com/pitel_app)
 
 `react-native-pitel-voip` is package support for voip call. Please contact [pitel](https://www.pitel.vn/)
 
 ## Demo
 
-![register](assets/images/register.png)
-![ougoing_call](assets/images/ougoing_call.png)
+![register](src/assets/images/register.png)
+![ougoing_call](src/assets/images/ougoing_call.png)
 
 ## Pitel Flow
 
 When user make call from Pitel app, Pitel Server pushes a notification for all user login (who receives the call). When user "Accept" call, extension will re-register to receive call.
-![Pitel Flow](assets/images/pitel_connect_flow.png)
+![Pitel Flow](src/assets/images/pitel_connect_flow.png)
 
 ## Features
 
@@ -150,7 +150,7 @@ buildscript {
 #### IOS
 
 - Open Xcode -> Select your project -> Select tab General -> Frameworks, Libraries, and Embedded Content -> Add Callkit.framework
-  ![CallKit framework](assets/images/callkit_framework.png)
+  ![CallKit framework](src/assets/images/callkit_framework.png)
 - Request permission in file `Info.plist`
 
 ```
@@ -470,6 +470,6 @@ Setting:
 2. Enter extension: example 102
 3. Click Setting icon
 4. Enter information to input field
-   ![tryit](assets/images/pitel_img_3.png)
+   ![tryit](src/assets/images/pitel_img_3.png)
 5. Save
 6. Click icon -> to connect

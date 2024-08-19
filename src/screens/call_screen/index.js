@@ -96,7 +96,7 @@ export const PitelCallKit = ({
           <IconTextButton
             icon={
               <Image
-                source={require('../../assets/icons/volume.png')}
+                source={require('../../src/assets/icons/volume.png')}
                 style={{ width: 24, height: 24 }}
               />
             }
@@ -110,7 +110,7 @@ export const PitelCallKit = ({
         <IconButton
           icon={
             <Image
-              source={require('../../assets/icons/hangup.png')}
+              source={require('../../src/assets/icons/hangup.png')}
               style={{ width: 29, height: 29 }}
             />
           }
