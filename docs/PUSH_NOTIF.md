@@ -6,7 +6,7 @@
 ## Pitel Flow
 
 When user make call from Pitel app, Pitel Server pushes a notification for all user login (who receives the call). When user "Accept" call, extension will re-register to receive call.
-![Pitel Flow](src/assets/images/pitel_connect_flow.png)
+![Pitel Flow](../src/assets/images/pitel_connect_flow.png)
 
 ## Image callkit
 
@@ -18,13 +18,13 @@ When user make call from Pitel app, Pitel Server pushes a notification for all u
   </tr>
   <tr>
     <td>
-      <img src="src/assets/images/call_kit_1.png" width="220">
+      <img src="../src/assets/images/call_kit_1.png" width="220">
     </td>
     <td>
-      <img src="src/assets/images/call_kit_2.png" width="220">
+      <img src="../src/assets/images/call_kit_2.png" width="220">
     </td>
     <td>
-      <img src="src/assets/images/call_kit_3.png" width="220">
+      <img src="../src/assets/images/call_kit_3.png" width="220">
     </td>
   </tr>
   <tr>	  
@@ -33,10 +33,10 @@ When user make call from Pitel app, Pitel Server pushes a notification for all u
   </tr>
   <tr>
     <td>
-      <img src="src/assets/images/call_kit_android_4.png" width="220">
+      <img src="../src/assets/images/callkit_android_4.png" width="220">
     </td>
     <td>
-      <img src="src/assets/images/call_kit_android_5.png" width="220">
+      <img src="../src/assets/images/callkit_android_5.png" width="220">
     </td>
   </tr>
  </table>
@@ -51,20 +51,20 @@ If you are making VoIP application than you definitely want to update your appli
 - In [Certificates, Identifiers & Profiles](https://developer.apple.com/account/resources), click Certificates in the sidebar.
 - On the top left, click the add button (+).The certificate type should be Apple Push Notification service SSL (Sandbox & Production) under Services.
 
-![push_img_10](src/assets/push_img/push_img_10.png)
+![push_img_10](../src/assets/push_img/push_img_10.png)
 
 **2. Choose an App ID from the pop-up menu, then click Continue.**
-![push_img_9](src/assets/push_img/push_img_9.png)
+![push_img_9](../src/assets/push_img/push_img_9.png)
 
 **3. Upload Certificate Signing Request → Continue**
-![push_img_8](src/assets/push_img/push_img_8.png)
+![push_img_8](../src/assets/push_img/push_img_8.png)
 
 Follow the instructions to [create a certificate signing request](https://developer.apple.com/help/account/create-certificates/create-a-certificate-signing-request).
 
 - **Install certificate.**
   Download the certificate and install it into the Keychain Access app(download .cer and double click to install).
 - **Export the .p12 file and config in [pitel portal](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/docs/PORTAL_GUIDE.md)**
-  ![push_img_7](src/assets/push_img/push_img_7.png)
+  ![push_img_7](../src/assets/push_img/push_img_7.png)
 
 # Setup Pushkit & Callkit
 
@@ -73,26 +73,26 @@ Follow the instructions to [create a certificate signing request](https://devel
 - Open Xcode Project → Capabilities
 - In Tab Signing & Capabilities. Enable Push notifications & Background Modes
 
-![push_img_5](src/assets/push_img/push_img_5.png)
+![push_img_5](../src/assets/push_img/push_img_5.png)
 
 - Create APNs key and upload in firebase project. In your apple developer account.
-  ![apns_key](src/assets/push_img/apns_key.png)
+  ![apns_key](../src/assets/push_img/apns_key.png)
 - Upload APNs key to your firebase
   - Create new your IOS App in Firebase project.
-    ![ios_app](src/assets/push_img/ios_app.png)
+    ![ios_app](../src/assets/push_img/ios_app.png)
   - Download file .p8 to upload to firebase
-    ![download_apns_key](src/assets/push_img/download_apns_key.png)
+    ![download_apns_key](../src/assets/push_img/download_apns_key.png)
   - Select IOS app -> upload Apns key
-    ![upload_key_firebase](src/assets/push_img/upload_key_firebase.png)
+    ![upload_key_firebase](../src/assets/push_img/upload_key_firebase.png)
   - Fill information in upload Apns key popup
-    ![upload_key_firebase_popup](src/assets/push_img/upload_key_firebase_popup.png)
+    ![upload_key_firebase_popup](../src/assets/push_img/upload_key_firebase_popup.png)
 
 ##### Installing your Firebase configuration file
 
 - Next you must add the file to the project using Xcode (adding manually via the filesystem won't link the file to the project). Using Xcode, open the project's ios/{projectName}.xcworkspace file. Right click Runner from the left-hand side project navigation within Xcode and select "Add files", as seen below:
-  ![ios_google_service_1](src/assets/push_img/ios_google_service_1.png)
+  ![ios_google_service_1](../src/assets/push_img/ios_google_service_1.png)
 - Select the GoogleService-Info.plist file you downloaded, and ensure the "Copy items if needed" checkbox is enabled:
-  ![ios_google_service_2](src/assets/push_img/ios_google_service_2.png)
+  ![ios_google_service_2](../src/assets/push_img/ios_google_service_2.png)
 
 #### Android
 
@@ -103,28 +103,28 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
 
 - Access link [https://console.firebase.google.com/u/0/project/\_/notification](https://console.firebase.google.com/u/0/project/_/notification)
 - Create your packageId for android app
-  ![push_img_4](src/assets/push_img/push_img_4.png)
+  ![push_img_4](../src/assets/push_img/push_img_4.png)
 - Download & copy file google_service.json -> replace file google_service.json in path: `android/app/google_service.json`
 
 ##### Firebase Project
 
 - Go to Project settings > Cloud Messaging and select Manage API in Google Cloud Console to open Google Cloud Console.
-  ![fcm1](src/assets/push_img/fcm1.png)
+  ![fcm1](../src/assets/push_img/fcm1.png)
 - Go to API Library using the back button as shown below.
-  ![fcm2](src/assets/push_img/fcm2.png)
+  ![fcm2](../src/assets/push_img/fcm2.png)
 - Search "cloud messaging" -> Select "Cloud Messaging"
-  ![fcm3](src/assets/push_img/fcm3.png)
+  ![fcm3](../src/assets/push_img/fcm3.png)
 - Click Enable to start using the Cloud Messaging API.
-  ![fcm4](src/assets/push_img/fcm4.png)
+  ![fcm4](../src/assets/push_img/fcm4.png)
 
 ##### Service Account
 
 - Go to Project settings > Cloud Messaging and select Manage API in Google Cloud Console to open Google Cloud Console.
-  ![fcm1](src/assets/push_img/fcm1.png)
+  ![fcm1](../src/assets/push_img/fcm1.png)
 - In tab "Credentials", scroll to "Service Accounts", click button edit with name "firebase-adminsdk".
-  ![fcm7](src/assets/push_img/fcm7.png)
+  ![fcm7](../src/assets/push_img/fcm7.png)
 - Choose tab KEYS, click "Add key" -> "Create new key" and download json file.
-  ![fcm8](src/assets/push_img/fcm8.png)
+  ![fcm8](../src/assets/push_img/fcm8.png)
 
 > **Note**
 >
@@ -140,7 +140,7 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
 
 - Download & install app from link https://github.com/onmyway133/PushNotifications/releases
 
-![push_img_2](src/assets/push_img/push_img_2.png)
+![push_img_2](../src/assets/push_img/push_img_2.png)
 
 - Fill information and click Send to Test Push Notification
 
@@ -155,7 +155,7 @@ Voip push Bundle Id: com.pitel.uikit.demo.voip
 
 ### IOS
 
-![push_img_1](src/assets/push_img/push_img_1.png)
+![push_img_1](../src/assets/push_img/push_img_1.png)
 
 ### Android: using above app or test from Postman
 
@@ -163,11 +163,11 @@ Voip push Bundle Id: com.pitel.uikit.demo.voip
 
 - Go to https://developers.google.com/oauthplayground/
 - Navigate to Step 1 (Select & authorize APIs) → Select “Firebase Cloud Messaging API v1” and click “Authorize API’s” button.
-  ![step_1](src/assets/push_img/gg_oauth_step_1.png)
+  ![step_1](../src/assets/push_img/gg_oauth_step_1.png)
 - You will be redirected to Authentication and needs permission for Google OAuth 2.0 Playground to view and manage the GCP services. Click “Allow” button.
 - Navigate to Step 2 (Exchange authorization code for tokens) → Click “Exchange authorization code for tokens” button.
   This will generate “Refresh token” and “Access token”.
-  ![step_2](src/assets/push_img/gg_oauth_step_2.png)
+  ![step_2](../src/assets/push_img/gg_oauth_step_2.png)
 
 > Note:
 >
