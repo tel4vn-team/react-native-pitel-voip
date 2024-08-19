@@ -2,19 +2,19 @@
 
 # Integrate Voip call to your project
 
-[![](src/assets/images/pitel-logo.png)](https://documents.tel4vn.com/pitel_app)
+[![](assets/images/pitel-logo.png)](https://documents.tel4vn.com/pitel_app)
 
 `react-native-pitel-voip` is package support for voip call. Please contact [pitel](https://www.pitel.vn/)
 
 ## Demo
 
-![register](src/assets/images/register.png)
-![ougoing_call](src/assets/images/ougoing_call.png)
+![register](assets/images/register.png)
+![ougoing_call](assets/images/ougoing_call.png)
 
 ## Pitel Flow
 
 When user make call from Pitel app, Pitel Server pushes a notification for all user login (who receives the call). When user "Accept" call, extension will re-register to receive call.
-![Pitel Flow](src/assets/images/pitel_connect_flow.png)
+![Pitel Flow](assets/images/pitel_connect_flow.png)
 
 ## Features
 
@@ -36,7 +36,7 @@ yarn add react-native-pitel-voip
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4
+yarn add react-native-callkeep@4.3.9 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.1.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4 react-native-full-screen-notification-incoming-call@1.0.1
 ```
 
 3. Pod install
@@ -47,11 +47,20 @@ pod install
 ```
 
 4. Pushkit/ Push notification - Received VoIP and Wake app from Terminated State.
-   Note Please check [PUSH_NOTIF.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/%20PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
+   Note Please check [PUSH_NOTIF.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/main/docs/PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
 
 5. Configure Project
 
 #### Android:
+
+- In styles.xml:
+
+```xml
+  <style name="incomingCall" parent="Theme.AppCompat.Light.NoActionBar">color
+  <!-- Customize status bar color   -->
+    <item name="colorPrimaryDark">#000000</item>
+  </style>
+```
 
 - In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/main/android/app/src/main/AndroidManifest.xml)
 
@@ -62,14 +71,16 @@ pod install
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -77,37 +88,31 @@ pod install
 
     ...
     // show when lock screen
-    <application
-    ...
-    >
-         <service android:name="io.wazo.callkeep.VoiceConnectionService"
-        android:label="Wazo"
+    <application ...>
+      <activity android:name="com.reactnativefullscreennotificationincomingcall.IncomingCallActivity"
+        android:theme="@style/incomingCall"
+        android:launchMode="singleTask"
+        android:excludeFromRecents="true"
         android:exported="true"
-        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
-        android:foregroundServiceType="camera|microphone"
-        >
-            <intent-filter>
-                <action android:name="android.telecom.ConnectionService" />
-            </intent-filter>
-        </service>
-        <activity
-            ...
-            android:showOnLockScreen="true"
-            android:showWhenLocked="true"
-            android:turnScreenOn="true"
-        >
-            ...
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-              <action android:name="android.intent.action.VIEW" />
-              <category android:name="android.intent.category.DEFAULT" />
-              <category android:name="android.intent.category.BROWSABLE" />
-              <data android:scheme="mychat" />
-            </intent-filter>
-        </activity>
+        android:showWhenLocked="true"
+        android:turnScreenOn="true"
+      />
+      <activity android:name="com.reactnativefullscreennotificationincomingcall.NotificationReceiverActivity"
+        android:theme="@style/incomingCall"
+        android:launchMode="singleTask"
+        android:excludeFromRecents="true"
+        android:exported="true"
+        android:showWhenLocked="true"
+        android:turnScreenOn="true"
+      />
+      <service
+        android:name="com.reactnativefullscreennotificationincomingcall.IncomingCallService"
+        android:enabled="true"
+        android:stopWithTask="false"
+        android:foregroundServiceType="phoneCall"
+        android:exported="true"
+      />
+      ...
     </application>
  </manifest>
 ```
@@ -145,7 +150,7 @@ buildscript {
 #### IOS
 
 - Open Xcode -> Select your project -> Select tab General -> Frameworks, Libraries, and Embedded Content -> Add Callkit.framework
-  ![CallKit framework](src/assets/images/callkit_framework.png)
+  ![CallKit framework](assets/images/callkit_framework.png)
 - Request permission in file `Info.plist`
 
 ```
@@ -290,14 +295,14 @@ const appId = `${BUNDLE_ID}`;
 const domainUrl = `${DOMAIN}`;
 
 const sdkOptionsInit = {
-    sipDomain: `${DOMAIN}`,
-    port: `${PORT}`,
-    extension: ext,
-    wssServer: `${WSS_URL}`,
-    sipPassword: sipPass,
-    bundleId: appId, // Bundle id for IOS
-    packageId: appId, // Package id for Android
-    teamId: `${TEAM_ID}`, 
+  sipDomain: `${DOMAIN}`,
+  port: `${PORT}`,
+  extension: ext,
+  wssServer: `${WSS_URL}`,
+  sipPassword: sipPass,
+  bundleId: appId, // Bundle id for IOS
+  packageId: appId, // Package id for Android
+  teamId: `${TEAM_ID}`,
 };
 ```
 
@@ -465,6 +470,6 @@ Setting:
 2. Enter extension: example 102
 3. Click Setting icon
 4. Enter information to input field
-   ![tryit](src/assets/images/pitel_img_3.png)
+   ![tryit](assets/images/pitel_img_3.png)
 5. Save
 6. Click icon -> to connect

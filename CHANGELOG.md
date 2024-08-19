@@ -2,6 +2,16 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.1.0-rc.2 - 2024-08-19
+
+- Update "react-native-callkeep" v4.3.13.
+- Intergrate package "react-native-full-screen-notification-incoming-call".
+- New flow incoming call notification.
+
+## 1.0.29 - 2024-08-19
+
+- Update react-native-callkeep v4.3.13.
+
 ## 1.0.28 - 2024-05-22
 
 - Refactor MediaStream.
