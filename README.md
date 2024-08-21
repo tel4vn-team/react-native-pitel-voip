@@ -30,7 +30,7 @@ When user make call from Pitel app, Pitel Server pushes a notification for all u
    Add pubspec.yaml:
 
 ```pubspec.yaml
-yarn add react-native-pitel-voip
+yarn add react-native-pitel-voip@1.1.0-rc.6
 ```
 
 2. Installing dependencies into a bare React Native project
