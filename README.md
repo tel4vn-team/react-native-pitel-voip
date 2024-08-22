@@ -191,7 +191,7 @@ node_require('react-native-permissions/scripts/setup.rb')
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-setup_permissions(['Bluetooth'])
+setup_permissions(['Bluetooth', 'Microphone'])
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
