@@ -23,6 +23,7 @@ export const PitelCallKit = ({
 
   textClock,
   phoneNumber,
+  displayName,
   direction,
   callState,
 }) => {
@@ -63,7 +64,8 @@ export const PitelCallKit = ({
       <View style={styles.headerCallInfo}>
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
-          <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text>
+          {/* <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text> */}
+          <Text style={styles.txtPhoneNumber}>{displayName}</Text>
           <Clock textClock={textClock} />
         </View>
       </View>

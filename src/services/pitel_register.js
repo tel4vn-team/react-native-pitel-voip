@@ -4,6 +4,7 @@ export const pitelRegister = ({
   sdkOptions,
   setCallState,
   setReceivedPhoneNumber,
+  setReceivedDisplayName,
   extension,
 }) => {
   const sdkDelegates = {
@@ -13,7 +14,8 @@ export const pitelRegister = ({
     onUnregistered() {
       setCallState('UNREGISTER');
     },
-    onCallCreated(remoteNumber) {
+    onCallCreated(remoteNumber, displayName) {
+      setReceivedDisplayName(displayName);
       setCallState('CALL_CREATED');
     },
     onCallReceived(remoteNumber) {
