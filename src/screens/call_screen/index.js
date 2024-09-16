@@ -9,7 +9,12 @@ import {
 } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import RNCallKeep from 'react-native-callkeep';
+import { btoa, atob } from 'react-native-quick-base64';
+import base64 from 'react-native-base64';
+import utf8 from 'utf8';
 import styles from './styles';
+
+import { decodeDisplayName } from '../../utils/display_name_helper';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
 
@@ -53,6 +58,11 @@ export const PitelCallKit = ({
     setModalVisible(true);
   };
 
+  const nameCaller = decodeDisplayName({
+    displayNameRaw: displayName,
+    phoneNumber: phoneNumber,
+  });
+
   return (
     <View style={styles.container}>
       <AudioModal
@@ -64,8 +74,9 @@ export const PitelCallKit = ({
       <View style={styles.headerCallInfo}>
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
-          {/* <Text style={styles.txtPhoneNumber}>{phoneNumber}</Text> */}
-          <Text style={styles.txtPhoneNumber}>{displayName}</Text>
+          <Text style={styles.txtPhoneNumber}>
+            {nameCaller != '' ? nameCaller : phoneNumber}
+          </Text>
           <Clock textClock={textClock} />
         </View>
       </View>

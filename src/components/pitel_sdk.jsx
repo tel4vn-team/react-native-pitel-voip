@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Platform, LogBox } from 'react-native';
 import { getFcmToken, NotificationListener } from '../notification/push_notif';
+import { encodeDisplayName } from '../utils/display_name_helper';
 import {
   registerDeviceToken,
   removeDeviceToken,
@@ -47,6 +48,11 @@ export const PitelSDK = ({
       iceServers.push(turn.data);
     }
 
+    const displayName = encodeDisplayName({
+      displayNameRaw: sdkOptionsInit.displayName,
+      phoneNumber: sdkOptionsInit.extension,
+    });
+
     const sdkOptionsInitialize = {
       sipOnly: true,
       sipDomain: `${sdkOptionsInit.sipDomain}:${sdkOptionsInit.port}`,
@@ -56,6 +62,7 @@ export const PitelSDK = ({
       debug: true,
       contactName: sdkOptionsInit.extension,
       viaHost: sdkOptionsInit.sipDomain,
+      displayName: displayName,
       preloadedRouteSet: [
         `Route: <sip:${sdkOptionsInit.sipDomain}:${sdkOptionsInit.port};lr;sipml5-outbound;transport=udp>`,
       ],

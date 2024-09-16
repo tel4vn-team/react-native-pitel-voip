@@ -30,13 +30,13 @@ When user make call from Pitel app, Pitel Server pushes a notification for all u
    Add pubspec.yaml:
 
 ```pubspec.yaml
-yarn add react-native-pitel-voip@1.1.0-rc.8
+yarn add react-native-pitel-voip@1.1.1
 ```
 
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.13 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.2.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4 react-native-full-screen-notification-incoming-call@1.0.1
+yarn add react-native-callkeep@4.3.13 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.2.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn@0.0.4 @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4 react-native-full-screen-notification-incoming-call@1.0.1 react-native-base64@0.2.1 utf8@3.0.0
 ```
 
 3. Pod install
@@ -293,6 +293,7 @@ const ext = `${EXTENSION}`;
 const sipPass = `${EXTENSION_SIP_PASSWORD}`;
 const appId = `${BUNDLE_ID}`;
 const domainUrl = `${DOMAIN}`;
+const displayName = `${EXTENSION_DISPLAY_NAME}`; // Display name of extension when incoming/outgoing call.
 
 const sdkOptionsInit = {
   sipDomain: `${DOMAIN}`,
@@ -303,6 +304,7 @@ const sdkOptionsInit = {
   bundleId: appId, // Bundle id for IOS
   packageId: appId, // Package id for Android
   teamId: `${TEAM_ID}`,
+  displayName: displayName,
 };
 ```
 

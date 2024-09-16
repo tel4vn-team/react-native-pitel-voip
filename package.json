@@ -1,6 +1,6 @@
 {
   "name": "react-native-pitel-voip",
-  "version": "1.1.0-rc.8",
+  "version": "1.1.1",
   "description": "This is package support for voip call",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -161,8 +161,10 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",
     "@react-native-firebase/messaging": "^18.1.0",
+    "react-native-base64": "^0.2.1",
     "react-native-callkeep": "^4.3.13",
     "react-native-full-screen-notification-incoming-call": "^1.0.1",
+    "utf8": "^3.0.0",
     "uuid": "^9.0.0"
   }
 }
