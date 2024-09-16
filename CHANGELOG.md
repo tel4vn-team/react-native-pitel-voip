@@ -2,7 +2,7 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
-## 1.1.1 - 2024-09-16
+## 1.1.2 - 2024-09-16
 
 - Support display name outgoing/incoming call.
 
