@@ -18,4 +18,4 @@ Please access link [portal-sdk](https://portal-sdk.tel4vn.com/login) and sign up
 - Click the "Plus icon" button to create new config for IOS & Android.
   ![config_ios](src/assets/images/config_ios.png)
   ![config_android](src/assets/images/config_android.png)
-- Please fill in the necessary information created in the [push_notification](https://github.com/anhquangmobile/react-native-pitel-voip/blob/1.1.0-rc/docs/PUSH_NOTIF.md) instructions.
+- Please fill in the necessary information created in the [push_notification](https://github.com/tel4vn-team/react-native-pitel-voip/blob/1.1.0-rc/docs/PUSH_NOTIF.md) instructions.

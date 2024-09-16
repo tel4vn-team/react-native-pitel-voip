@@ -40,13 +40,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/anhquangmobile/react-native-pitel-voip",
+  "repository": "https://github.com/tel4vn-team/react-native-pitel-voip",
   "author": "anhquangmobile <quangduong@tel4vn.com> (https://github.com/anhquangmobile)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/anhquangmobile/react-native-pitel-voip/issues"
+    "url": "https://github.com/tel4vn-team/react-native-pitel-voip/issues"
   },
-  "homepage": "https://github.com/anhquangmobile/react-native-pitel-voip#readme",
+  "homepage": "https://github.com/tel4vn-team/react-native-pitel-voip#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

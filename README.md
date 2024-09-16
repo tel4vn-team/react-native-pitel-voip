@@ -47,7 +47,7 @@ pod install
 ```
 
 4. Pushkit/ Push notification - Received VoIP and Wake app from Terminated State.
-   Note Please check [PUSH_NOTIF.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/1.1.0-rc/docs/PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
+   Note Please check [PUSH_NOTIF.md](https://github.com/tel4vn-team/react-native-pitel-voip/blob/1.1.0-rc/docs/PUSH_NOTIF.md). setup Pushkit (for IOS), push notification (for Android).
 
 5. Configure Project
 
@@ -62,7 +62,7 @@ pod install
   </style>
 ```
 
-- In file `android/app/src/1.1.0-rc/AndroidManifest.xml`. [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/android/app/src/1.1.0-rc/AndroidManifest.xml)
+- In file `android/app/src/1.1.0-rc/AndroidManifest.xml`. [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/android/app/src/1.1.0-rc/AndroidManifest.xml)
 
 ```xml
  <manifest...>
@@ -232,11 +232,11 @@ end
 
 ## Example
 
-Checkout repo github to get [example](https://github.com/anhquangmobile/react-native-pitel-demo). Please run the example to understand the process before integrating the package into your application.
+Checkout repo github to get [example](https://github.com/tel4vn-team/react-native-pitel-demo). Please run the example to understand the process before integrating the package into your application.
 
 ## Usage
 
-- In file [index.js](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/index.js)
+- In file [index.js](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/index.js)
 
 ```js
 import { NotificationBackground } from 'react-native-pitel-voip'; // Add this line
@@ -264,7 +264,7 @@ NotificationBackground(options); // Add this line
 AppRegistry.registerComponent(appName, () => App);
 ```
 
-- In file [App.jsx](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/App.jsx)
+- In file [App.jsx](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/App.jsx)
 
 ```js
 // Import this
@@ -284,7 +284,7 @@ export default function App() {
 ```
 
 - In file `src/screens/home_screen/index.js`
-  Please follow [example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/src/screens/home_screen/index.js)
+  Please follow [example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/src/screens/home_screen/index.js)
 
 > Config sdkOption
 
@@ -365,7 +365,7 @@ return (
 | setSdkOptions  | set sdkOption when your extension login success | Function | Required |
 
 - In file `src/screens/home_screen/home_screen.js`
-  [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/src/screens/home_screen/home_screen.js)
+  [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/src/screens/home_screen/home_screen.js)
 
 > **Note**
 >
@@ -428,7 +428,7 @@ return (
 | onHangup     | set hang up                                      | () => void | Required |
 | onIOSToken   | ios voip push notification                       | String     | Required |
 
-- In file `src/screens/call_screen/index.js` [Example](https://github.com/anhquangmobile/react-native-pitel-demo/blob/1.1.0-rc/src/screens/call_screen/index.js)
+- In file `src/screens/call_screen/index.js` [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/1.1.0-rc/src/screens/call_screen/index.js)
 
 ```js
 import React, { useState, useContext } from 'react';

@@ -63,7 +63,7 @@ Follow the instructions to [create a certificate signing request](https://devel
 
 - **Install certificate.**
   Download the certificate and install it into the Keychain Access app(download .cer and double click to install).
-- **Export the .p12 file and config in [pitel portal](https://github.com/anhquangmobile/react-native-pitel-voip/blob/1.1.0-rc/docs/PORTAL_GUIDE.md)**
+- **Export the .p12 file and config in [pitel portal](https://github.com/tel4vn-team/react-native-pitel-voip/blob/1.1.0-rc/docs/PORTAL_GUIDE.md)**
   ![push_img_7](../src/assets/push_img/push_img_7.png)
 
 # Setup Pushkit & Callkit
@@ -129,12 +129,12 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
 > **Note**
 >
 > - After complete all step Setup. Please send information to dev of Tel4vn in [here](https://portal-sdk.tel4vn.com/)
-> - Please check [PORTAL_GUIDE.md](https://github.com/anhquangmobile/react-native-pitel-voip/blob/1.1.0-rc/docs/PORTAL_GUIDE.md) to setup your config.
+> - Please check [PORTAL_GUIDE.md](https://github.com/tel4vn-team/react-native-pitel-voip/blob/1.1.0-rc/docs/PORTAL_GUIDE.md) to setup your config.
 
 # Installation (your project)
 
 - IOS: Replace your file ios/${YOUR_PROJECT_NAME}/AppDelegate.mm with
-  [AppDelegate](https://github.com/anhquangmobile/rn-pitel-demo/blob/1.1.0-rc/ios/rn_pitel_demo/AppDelegate.mm)
+  [AppDelegate](https://github.com/tel4vn-team/rn-pitel-demo/blob/1.1.0-rc/ios/rn_pitel_demo/AppDelegate.mm)
 
 ## How to test
 

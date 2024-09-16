@@ -2,6 +2,10 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.1.1 - 2024-09-16
+
+- Support display name outgoing/incoming call.
+
 ## 1.1.0-rc.2 - 2024-08-19
 
 - Update "react-native-callkeep" v4.3.13.
