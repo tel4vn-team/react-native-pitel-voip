@@ -39,8 +39,8 @@ function handleNotification(
   switch (remoteMessage?.data?.callType) {
     case 'CALL':
       if (remoteMessage.data != null) {
-        const phoneNumber = remoteMessage.data.nameCaller ?? '';
-        const uuid = remoteMessage.data.uuid ?? '';
+        const phoneNumber = (remoteMessage.data.nameCaller as string) ?? '';
+        const uuid = (remoteMessage.data.uuid as string) ?? '';
         setCallDisplay(true);
         callKitDisplay(phoneNumber, uuid);
       }
