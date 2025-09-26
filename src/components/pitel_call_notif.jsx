@@ -6,12 +6,13 @@
  */
 
 import React, { useEffect, useState, useContext } from 'react';
+import { Platform, AppState, Alert } from 'react-native';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
 import RNCallKeep from 'react-native-callkeep';
 import RNNotificationCall from 'react-native-full-screen-notification-incoming-call';
-import { Platform, AppState } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
+
 import {
   mediaDevices,
   MediaStream,
@@ -20,9 +21,9 @@ import {
   RTCIceCandidate,
   RTCPeerConnection,
   RTCSessionDescription,
-} from 'pitel-react-native-webrtc';
+  RTCRtpSender,
+} from 'react-native-webrtc';
 
-import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   check,
@@ -30,23 +31,55 @@ import {
   RESULTS,
   requestMultiple,
 } from 'react-native-permissions';
+
 import { PitelSDKContext } from '../context/pitel_sdk_context';
 import {
   setCallDisplay,
   getCallDisplay,
 } from '../notification/callkit_service';
 
-window.RTCPeerConnection = window.RTCPeerConnection || RTCPeerConnection;
-window.RTCIceCandidate = window.RTCIceCandidate || RTCIceCandidate;
-window.RTCSessionDescription =
-  window.RTCSessionDescription || RTCSessionDescription;
-window.MediaStream = window.MediaStream || MediaStream;
-window.MediaStreamTrack = window.MediaStreamTrack || MediaStreamTrack;
-window.MediaStreamTrackEvent =
-  window.MediaStreamTrackEvent || MediaStreamTrackEvent;
-window.navigator.mediaDevices = window.navigator.mediaDevices || mediaDevices;
-window.navigator.getUserMedia =
-  window.navigator.getUserMedia || mediaDevices.getUserMedia;
+/* 🌐 Polyfill WebRTC vào window để giống browser */
+if (typeof window !== 'undefined') {
+  window.RTCPeerConnection = window.RTCPeerConnection || RTCPeerConnection;
+  window.RTCIceCandidate = window.RTCIceCandidate || RTCIceCandidate;
+  window.RTCSessionDescription =
+    window.RTCSessionDescription || RTCSessionDescription;
+  window.MediaStream = window.MediaStream || MediaStream;
+  window.MediaStreamTrack = window.MediaStreamTrack || MediaStreamTrack;
+  window.MediaStreamTrackEvent =
+    window.MediaStreamTrackEvent || MediaStreamTrackEvent;
+  window.navigator.mediaDevices = window.navigator.mediaDevices || mediaDevices;
+  window.navigator.getUserMedia =
+    window.navigator.getUserMedia || mediaDevices.getUserMedia;
+}
+
+/* 🛡 Safe patch: tránh crash khi track/sender = null */
+const origAddTrack = RTCPeerConnection.prototype.addTrack;
+RTCPeerConnection.prototype.addTrack = function (track, ...args) {
+  if (!track) {
+    console.warn('[WebRTC] addTrack skipped because track=null');
+    return null;
+  }
+  return origAddTrack.apply(this, [track, ...args]);
+};
+
+const origReplaceTrack = RTCRtpSender.prototype.replaceTrack;
+RTCRtpSender.prototype.replaceTrack = function (track) {
+  if (!track) {
+    console.warn('[WebRTC] replaceTrack skipped because track=null');
+    return Promise.resolve();
+  }
+  return origReplaceTrack.apply(this, [track]);
+};
+
+const origGetStats = RTCRtpSender.prototype.getStats;
+RTCRtpSender.prototype.getStats = function (...args) {
+  if (!this) {
+    console.warn('[WebRTC] getStats skipped because sender=null');
+    return Promise.resolve({});
+  }
+  return origGetStats.apply(this, args);
+};
 
 export const PitelCallNotif = ({
   callkitSetup,
