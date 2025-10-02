@@ -17,14 +17,19 @@ export const useRegister = ({ sdkOptions, extension, setPitelSDK }) => {
   }, [callState]);
 
   const registerFunc = async () => {
-    const pitelSDKRes = pitelRegister({
-      sdkOptions: sdkOptions,
-      setCallState: setCallState,
-      setReceivedPhoneNumber: setReceivedPhoneNumber,
-      setReceivedDisplayName: setReceivedDisplayName,
-      extension: extension,
-    });
-    setPitelSDK(pitelSDKRes);
+    try {
+      const pitelSDKRes = await pitelRegister({
+        sdkOptions: sdkOptions,
+        setCallState: setCallState,
+        setReceivedPhoneNumber: setReceivedPhoneNumber,
+        setReceivedDisplayName: setReceivedDisplayName,
+        extension: extension,
+      });
+      setPitelSDK(pitelSDKRes);
+    } catch (error) {
+      console.error('[useRegister] Failed to register:', error);
+      setCallState('ERROR');
+    }
   };
 
   return {

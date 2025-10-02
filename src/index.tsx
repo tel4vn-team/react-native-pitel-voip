@@ -1,3 +1,19 @@
+// Import WebRTC polyfill FIRST to ensure proper initialization
+import './utils/webrtc-polyfill';
+import './utils/webrtcSafePatch';
+
+// Add global error handler for better debugging
+const globalAny = global as any;
+if (typeof globalAny.ErrorUtils !== 'undefined') {
+  const originalGlobalHandler = globalAny.ErrorUtils.getGlobalHandler();
+  globalAny.ErrorUtils.setGlobalHandler((error: any, isFatal: boolean) => {
+    console.error('[Global Error Handler]', error, 'isFatal:', isFatal);
+    if (originalGlobalHandler) {
+      originalGlobalHandler(error, isFatal);
+    }
+  });
+}
+
 import { Counter } from './components/counter';
 import { PitelCallOut } from './components/pitel_call_out';
 import { PitelCallNotif } from './components/pitel_call_notif';
@@ -34,4 +50,6 @@ export {
   // Context
   PitelSDKProvider,
   PitelSDKContext,
+
+  // Utils
 };
