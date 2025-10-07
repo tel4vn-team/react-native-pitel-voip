@@ -28,6 +28,8 @@ import {
 } from './notification/push_notif';
 import { registerDeviceToken, removeDeviceToken } from './api/login_device';
 import { PitelSDKProvider, PitelSDKContext } from './context/pitel_sdk_context';
+import AirPlayManager from './modules/AirPlayManager';
+import { AirPlayButton } from './components/airplay_button';
 
 export {
   Counter,
@@ -50,6 +52,10 @@ export {
   // Context
   PitelSDKProvider,
   PitelSDKContext,
+
+  // AirPlay (iOS only)
+  AirPlayManager,
+  AirPlayButton,
 
   // Utils
 };

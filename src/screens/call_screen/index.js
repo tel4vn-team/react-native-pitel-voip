@@ -21,6 +21,8 @@ import { IconButton } from '../../components/icon_button';
 import { Clock } from '../../components/clock/clock';
 import { AudioModal } from '../../components/modals/audio_modal';
 
+import AirPlayManager from '../../modules/AirPlayManager';
+
 export const PitelCallKit = ({
   callID,
   pitelSDK,
@@ -115,8 +117,18 @@ export const PitelCallKit = ({
             }
             title={'Speaker'}
             onPress={async () => {
-              setSpeaker(!speaker);
-              selectAudio();
+              switch (Platform.OS) {
+                case 'android':
+                  setSpeaker(!speaker);
+                  selectAudio();
+                  break;
+                case 'ios':
+                  if (AirPlayManager.isAvailable()) {
+                    setSpeaker(!speaker);
+                    await AirPlayManager.showAirPlayPicker();
+                  }
+                  break;
+              }
             }}
           />
         </View>

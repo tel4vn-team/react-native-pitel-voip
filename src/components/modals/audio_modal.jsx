@@ -1,8 +1,15 @@
 import * as React from 'react';
-import { Modal, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import InCallManager from 'react-native-incall-manager';
 import RNCallKeep from 'react-native-callkeep';
-import { Platform } from 'react-native';
+import AirPlayManager from '../../modules/AirPlayManager';
 
 export const AudioModal = ({
   modalVisible,
@@ -11,10 +18,34 @@ export const AudioModal = ({
   callID,
 }) => {
   const [audioSelected, setAudioSelected] = React.useState('');
+  const [currentRoute, setCurrentRoute] = React.useState(null);
+
+  // Check current audio route when modal opens (iOS only)
+  React.useEffect(() => {
+    if (Platform.OS === 'ios' && modalVisible) {
+      checkCurrentRoute();
+    }
+  }, [modalVisible]);
+
+  const checkCurrentRoute = async () => {
+    const route = await AirPlayManager.getCurrentAudioRoute();
+    setCurrentRoute(route);
+    if (route) {
+      setAudioSelected(route.type);
+    }
+  };
 
   // Case call out
   const selectAudioRoute = async (type) => {
     setAudioSelected(type);
+
+    // Handle AirPlay selection
+    if (type === 'AirPlay' && Platform.OS === 'ios') {
+      await AirPlayManager.showAirPlayPicker();
+      setModalVisible(!modalVisible);
+      return;
+    }
+
     if (Platform.OS == 'android') {
       selectAudioAndroid(type);
     } else {
@@ -54,6 +85,18 @@ export const AudioModal = ({
     await RNCallKeep.setAudioRoute(callID, typeSelected);
   };
 
+  // Add AirPlay option to audioList for iOS
+  const enhancedAudioList = React.useMemo(() => {
+    if (Platform.OS === 'ios' && AirPlayManager.isAvailable()) {
+      // Check if AirPlay already exists in the list
+      const hasAirPlay = audioList.some((item) => item.type === 'AirPlay');
+      if (!hasAirPlay) {
+        return [...audioList, { name: 'AirPlay', type: 'AirPlay' }];
+      }
+    }
+    return audioList;
+  }, [audioList]);
+
   return (
     <Modal
       animationType="fade"
@@ -67,9 +110,10 @@ export const AudioModal = ({
         <View style={styles.modalView}>
           <Text style={styles.modalText}>Choose audio output</Text>
           <View>
-            {audioList.map((item) => {
+            {enhancedAudioList.map((item, index) => {
               return (
                 <TouchableOpacity
+                  key={`${item.type}-${index}`}
                   style={[styles.button]}
                   onPress={() => selectAudioRoute(item.type)}
                 >
