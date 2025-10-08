@@ -30,13 +30,13 @@ When user make call from Pitel app, Pitel Server pushes a notification for all u
    Add pubspec.yaml:
 
 ```pubspec.yaml
-yarn add react-native-pitel-voip@1.1.3
+yarn add react-native-pitel-voip@1.1.4
 ```
 
 2. Installing dependencies into a bare React Native project
 
 ```js
-yarn add react-native-callkeep@4.3.13 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@18.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.2.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn@0.0.4 @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4 react-native-full-screen-notification-incoming-call@1.0.1 react-native-base64@0.2.1 utf8@3.0.0
+yarn add react-native-callkeep@4.3.13 @react-native-firebase/app@18.1.0 @react-native-firebase/messaging@22.1.0 react-native-background-timer@2.4.1 react-native-get-random-values@1.9.0 react-native-incall-manager@4.2.0 react-native-voip-push-notification@3.3.2 uuid@9.0.0 pitel-react-native-webrtc pitel-sdk-for-rn@0.0.6 @react-native-async-storage/async-storage@1.19.1 react-native-permissions@4.0.4 react-native-full-screen-notification-incoming-call@1.0.1 react-native-base64@0.2.1 utf8@3.0.0 @react-native-webrtc@124.0.6
 ```
 
 3. Pod install
@@ -67,27 +67,28 @@ pod install
 ```xml
  <manifest...>
     ...
-    // Request permission
+    <!--Request permission-->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <!--Android 14+-->
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
     ...
-    // show when lock screen
+    <!--show when lock screen-->
     <application ...>
       <activity android:name="com.reactnativefullscreennotificationincomingcall.IncomingCallActivity"
         android:theme="@style/incomingCall"
@@ -136,13 +137,13 @@ buildscript {
     ext {
         ...
         minSdkVersion = 24
-        compileSdkVersion = 34
-        targetSdkVersion = 34
+        compileSdkVersion = 35
+        targetSdkVersion = 35
     }
     ...
     dependencies {
         ...
-        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.gms:google-services:4.4.0'
     }
 }
 ```
@@ -174,7 +175,7 @@ buildscript {
 - Make sure platform ios `12.0` in `Podfile`
 
 ```js
-# Resolve react_native_pods.rb with node to allow for hoisting
+# Transform this into a `node_require` generic function:
 def node_require(script)
   # Resolve script with node to allow for hoisting
   require Pod::Executable.execute_command('node', ['-p',
@@ -191,7 +192,11 @@ node_require('react-native-permissions/scripts/setup.rb')
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-setup_permissions(['Bluetooth', 'Microphone'])
+# Setup permissions
+setup_permissions([
+  'Bluetooth',
+  'Microphone',
+])
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -199,7 +204,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'rnpiteldemo' do
+target 'ReactNativePitelDemo' do
   config = use_native_modules!
 
   pod 'Firebase', :modular_headers => true
@@ -209,14 +214,11 @@ target 'rnpiteldemo' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :fabric_enabled => true,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  target 'rnpiteldemoTests' do
-    inherit! :complete
-    # Pods for testing
-  end
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
@@ -229,6 +231,26 @@ target 'rnpiteldemo' do
   end
 end
 ```
+
+## Config Airplay for audio output (iOS only)
+
+**Add files to Xcode:**
+
+```bash
+open ios/<YourProjectName>.xcworkspace
+```
+
+- Right-click on your project folder → **"Add Files to..."**
+- Select `ios/RNAirPlayModule.swift` and `ios/RNAirPlayModule.m`
+- Check: ✅ Copy items if needed, ✅ Create groups, ✅ Add to targets
+
+**Bridging Header:**
+
+- When prompted, click **"Create Bridging Header"**
+- Or ensure `<YourProjectName>-Bridging-Header.h` contains:
+  ```objective-c
+  #import <React/RCTBridgeModule.h>
+  ```
 
 ## Example
 

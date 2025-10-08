@@ -8,7 +8,11 @@ import {
   Image,
 } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
-import RNCallKeep from 'react-native-callkeep';
+// Only import RNCallKeep on iOS to avoid Android conflicts
+let RNCallKeep;
+if (Platform.OS === 'ios') {
+  RNCallKeep = require('react-native-callkeep').default;
+}
 import { btoa, atob } from 'react-native-quick-base64';
 import base64 from 'react-native-base64';
 import utf8 from 'utf8';
@@ -41,8 +45,9 @@ export const PitelCallKit = ({
 
   const selectAudio = async () => {
     InCallManager.start({ media: 'audio' });
-    const res = await RNCallKeep.getAudioRoutes();
-    if (Platform.OS == 'ios') {
+
+    if (Platform.OS == 'ios' && RNCallKeep) {
+      const res = await RNCallKeep.getAudioRoutes();
       InCallManager.setForceSpeakerphoneOn(false);
       const checkType =
         res.find((item) => item.type == 'Bluetooth')?.type ?? null;
@@ -55,9 +60,16 @@ export const PitelCallKit = ({
         setAudioList(res);
         setModalVisible(true);
       }
+    } else if (Platform.OS == 'android') {
+      // Android - use InCallManager for audio routes
+      const audioRoutes = [
+        { type: 'Speaker', name: 'Speaker' },
+        { type: 'Bluetooth', name: 'Bluetooth' },
+        { type: 'Phone', name: 'Phone' },
+      ];
+      setAudioList(audioRoutes);
+      setModalVisible(true);
     }
-    setAudioList(res);
-    setModalVisible(true);
   };
 
   const nameCaller = decodeDisplayName({

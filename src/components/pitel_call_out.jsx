@@ -6,10 +6,20 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 
 import InCallManager from 'react-native-incall-manager';
-import RNCallKeep from 'react-native-callkeep';
+// Only import RNCallKeep on iOS to avoid Android conflicts
+let RNCallKeep;
+if (Platform.OS === 'ios') {
+  RNCallKeep = require('react-native-callkeep').default;
+}
 
 import { pitelRegister } from '../services/pitel_register';
 import { useRegister } from '../hooks/register_hook';

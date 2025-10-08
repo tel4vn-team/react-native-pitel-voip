@@ -10,7 +10,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Platform, AppState, Alert } from 'react-native';
 
 import VoipPushNotification from 'react-native-voip-push-notification';
-import RNCallKeep from 'react-native-callkeep';
+// Only import RNCallKeep on iOS to avoid Android conflicts
+let RNCallKeep;
+if (Platform.OS === 'ios') {
+  RNCallKeep = require('react-native-callkeep').default;
+}
 import RNNotificationCall from 'react-native-full-screen-notification-incoming-call';
 import InCallManager from 'react-native-incall-manager';
 
@@ -80,9 +84,9 @@ export const PitelCallNotif = ({
       case 'CALL_HANGUP':
         setStartClock(false);
         setEnableHangup(false);
-        if (Platform.OS == 'ios') {
+        if (Platform.OS == 'ios' && RNCallKeep) {
           RNCallKeep.endAllCalls();
-        } else {
+        } else if (Platform.OS == 'android') {
           RNNotificationCall.declineCall();
         }
         onHangup();
@@ -261,6 +265,11 @@ export const PitelCallNotif = ({
   };
 
   const initializeCallKeep = async () => {
+    if (!RNCallKeep) {
+      console.warn('RNCallKeep is not available (iOS only)');
+      return;
+    }
+
     try {
       await RNCallKeep.setup(callkitSetup);
     } catch (err) {
@@ -296,7 +305,9 @@ export const PitelCallNotif = ({
     setAcceptCall(false);
     setCancelCall(true);
     setCallDisplay(false);
-    RNCallKeep.endCall(callUUID);
+    if (RNCallKeep) {
+      RNCallKeep.endCall(callUUID);
+    }
   };
   const onToggleMutePitel = (data) => {
     let { muted, callUUID } = data;
@@ -320,7 +331,9 @@ export const PitelCallNotif = ({
 
   const onAnswerCallActionPitel = async (data) => {
     let callUUID = data?.callUUID ?? '';
-    RNCallKeep.setCurrentCallActive(callUUID);
+    if (RNCallKeep) {
+      RNCallKeep.setCurrentCallActive(callUUID);
+    }
     setAcceptCall(true);
     setCallDisplay(false);
     setCallID(callUUID);

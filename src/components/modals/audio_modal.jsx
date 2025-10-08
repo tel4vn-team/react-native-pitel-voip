@@ -8,7 +8,11 @@ import {
   Platform,
 } from 'react-native';
 import InCallManager from 'react-native-incall-manager';
-import RNCallKeep from 'react-native-callkeep';
+// Only import RNCallKeep on iOS to avoid Android conflicts
+let RNCallKeep;
+if (Platform.OS === 'ios') {
+  RNCallKeep = require('react-native-callkeep').default;
+}
 import AirPlayManager from '../../modules/AirPlayManager';
 
 export const AudioModal = ({
@@ -56,10 +60,8 @@ export const AudioModal = ({
 
   // Android
   const selectAudioAndroid = async (type) => {
-    const res = await RNCallKeep.getAudioRoutes();
-    const typeSelected = res.find((item) => item.type == type).name;
-
-    switch (typeSelected) {
+    // Android doesn't use RNCallKeep, just use InCallManager directly
+    switch (type) {
       case 'Speaker':
         await InCallManager.chooseAudioRoute('SPEAKER_PHONE');
         break;
@@ -70,19 +72,20 @@ export const AudioModal = ({
         await InCallManager.chooseAudioRoute('EARPIECE');
         break;
     }
-    await RNCallKeep.setAudioRoute(callID, typeSelected);
   };
 
   // IOS
   const selectAudioIOS = async (type) => {
-    const res = await RNCallKeep.getAudioRoutes();
-    const typeSelected = res.find((item) => item.type == type).name;
-    if (typeSelected === 'Speaker') {
-      InCallManager.setForceSpeakerphoneOn(true);
-    } else {
-      InCallManager.setForceSpeakerphoneOn(false);
+    if (RNCallKeep) {
+      const res = await RNCallKeep.getAudioRoutes();
+      const typeSelected = res.find((item) => item.type == type).name;
+      if (typeSelected === 'Speaker') {
+        InCallManager.setForceSpeakerphoneOn(true);
+      } else {
+        InCallManager.setForceSpeakerphoneOn(false);
+      }
+      await RNCallKeep.setAudioRoute(callID, typeSelected);
     }
-    await RNCallKeep.setAudioRoute(callID, typeSelected);
   };
 
   // Add AirPlay option to audioList for iOS

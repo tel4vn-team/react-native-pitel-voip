@@ -2,7 +2,11 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import { AppState, Platform } from 'react-native';
-import RNCallKeep from 'react-native-callkeep';
+// Only import RNCallKeep on iOS to avoid Android conflicts
+let RNCallKeep: any;
+if (Platform.OS === 'ios') {
+  RNCallKeep = require('react-native-callkeep').default;
+}
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNNotificationCall from 'react-native-full-screen-notification-incoming-call';
 
@@ -47,7 +51,9 @@ function handleNotification(
       break;
     case 'CANCEL_ALL':
     case 'CANCEL_GROUP':
-      RNCallKeep.endAllCalls();
+      if (Platform.OS === 'ios' && RNCallKeep) {
+        RNCallKeep.endAllCalls();
+      }
       RNNotificationCall.hideNotification();
       setCallDisplay(false);
       break;
