@@ -31,6 +31,7 @@ import {
   setCallDisplay,
   getCallDisplay,
 } from '../notification/callkit_service';
+import LockScreenManager from '../modules/LockScreenManager';
 
 export const PitelCallNotif = ({
   callkitSetup,
@@ -72,28 +73,29 @@ export const PitelCallNotif = ({
     switch (callState) {
       case 'CALL_RECEIVED':
         setIsCallOut(false);
-        if (Platform.OS == 'ios') {
+        if (Platform.OS == 'android') {
+          // Enable lock screen bypass for incoming calls
+          handleIncomingCallAndroid();
+        } else if (Platform.OS == 'ios') {
           if (acceptCall) {
             pitelSDK.accept();
             onReceived();
           }
-        } else {
-          acceptCallAndroid();
         }
         break;
       case 'CALL_HANGUP':
         setStartClock(false);
         setEnableHangup(false);
-        if (Platform.OS == 'ios' && RNCallKeep) {
-          RNCallKeep.endAllCalls();
-        } else if (Platform.OS == 'android') {
+        if (Platform.OS == 'android') {
+          // Clear lock screen flags when call ends
+          LockScreenManager.clearLockScreenFlags();
           RNNotificationCall.declineCall();
+          hangupAndroid();
+        } else if (Platform.OS == 'ios' && RNCallKeep) {
+          RNCallKeep.endAllCalls();
         }
         onHangup();
         setCallState('REGISTER');
-        if (Platform.OS === 'android') {
-          hangupAndroid();
-        }
         InCallManager.stop();
         break;
       case 'CALL_CREATED':
@@ -114,6 +116,28 @@ export const PitelCallNotif = ({
     if (value === 'TRUE' || acceptCall) {
       pitelSDK.accept();
       onReceived();
+    }
+  };
+
+  const handleIncomingCallAndroid = async () => {
+    try {
+      // Check if device is locked
+      const isLocked = await LockScreenManager.isDeviceLocked();
+      console.log('[PitelCallNotif] Device is locked:', isLocked);
+
+      if (isLocked) {
+        // Show on lock screen
+        await LockScreenManager.showOnLockScreen();
+        // Wake up screen
+        await LockScreenManager.wakeUpScreen();
+      }
+
+      // Continue with existing flow
+      acceptCallAndroid();
+    } catch (error) {
+      console.error('[PitelCallNotif] Error handling incoming call:', error);
+      // Fallback to existing flow
+      acceptCallAndroid();
     }
   };
 

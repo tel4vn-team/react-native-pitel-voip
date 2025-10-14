@@ -29,6 +29,7 @@ import {
 import { registerDeviceToken, removeDeviceToken } from './api/login_device';
 import { PitelSDKProvider, PitelSDKContext } from './context/pitel_sdk_context';
 import AirPlayManager from './modules/AirPlayManager';
+import LockScreenManager from './modules/LockScreenManager';
 import { AirPlayButton } from './components/airplay_button';
 
 export {
@@ -56,6 +57,9 @@ export {
   // AirPlay (iOS only)
   AirPlayManager,
   AirPlayButton,
+
+  // Lock Screen (Android only)
+  LockScreenManager,
 
   // Utils
 };
