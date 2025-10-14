@@ -148,6 +148,8 @@ buildscript {
 }
 ```
 
+- Config bypass lockscreen [LOCK_SCREEN_BYPASS.md](https://github.com/tel4vn-team/react-native-pitel-voip/blob/main/docs/LOCK_SCREEN_BYPASS.md)
+
 #### IOS
 
 - Open Xcode -> Select your project -> Select tab General -> Frameworks, Libraries, and Embedded Content -> Add Callkit.framework

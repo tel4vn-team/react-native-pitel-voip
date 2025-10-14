@@ -265,6 +265,69 @@ export const PitelCallNotif = ({
     return result;
   };
   const initIncomingCallAndroid = async () => {
+
+      // Check POST_NOTIFICATIONS result
+      const notificationResult =
+        granted[PERMISSIONS.ANDROID.POST_NOTIFICATIONS];
+
+      if (notificationResult !== RESULTS.GRANTED) {
+        console.warn('[Pitel Logs]: POST_NOTIFICATIONS not granted permission');
+        console.log('[Pitel] Permission status:', notificationResult);
+        console.log('[Pitel] All possible RESULTS:', Object.keys(RESULTS));
+
+        if (notificationResult === RESULTS.DENIED) {
+          // User denied but can be asked again
+          console.log('[Pitel] Permission denied - user can be asked again');
+          Alert.alert(
+            'Notification Permission Required',
+            'This app needs notification permission to show incoming calls. Without this permission, you may miss important calls.',
+            [
+              { text: 'Not Now', style: 'cancel' },
+              {
+                text: 'Grant Permission',
+                onPress: async () => {
+                  // Try requesting again
+                  const retryResult = await requestMultiple([
+                    PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+                  ]);
+                  console.log('[Pitel] Retry result:', retryResult);
+                },
+              },
+            ]
+          );
+        } else if (notificationResult === RESULTS.BLOCKED) {
+          // User permanently denied - must go to settings
+          console.log('[Pitel] Permission blocked - must open settings');
+          Alert.alert(
+            'Notification Permission Required',
+            'Notification permission is permanently denied. Please enable it in app settings to receive incoming call notifications.',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Open Settings', onPress: () => openSettings() },
+            ]
+          );
+        } else if (notificationResult === RESULTS.UNAVAILABLE) {
+          console.log(
+            '[Pitel] Notification permission unavailable on this device'
+          );
+        } else if (notificationResult === undefined) {
+          console.log(
+            '[Pitel] Permission result is undefined - possibly unsupported Android version'
+          );
+          console.log(
+            '[Pitel] Falling back to alternative notification approach'
+          );
+          // For older Android versions or unsupported scenarios
+          return { fallback: true, reason: 'POST_NOTIFICATIONS_UNDEFINED' };
+        }
+      } else {
+  const requestAndroidPermission = async () => {
+    console.log('[Pitel] Requesting Android notification permission...');
+    const result = await requestNotificationPermission();
+    console.log('[Pitel] Permission result:', result);
+    return result;
+  };
+  const initIncomingCallAndroid = async () => {
     await requestAndroidPermission();
     RNNotificationCall.addEventListener('endCall', (data) => {
       const { callUUID } = data;
