@@ -7,6 +7,10 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
+  "android": {
+    "sourceDir": "android",
+    "packageImportPath": "import com.reactnativepitelvoip.PitelVoipPackage;"
+  },
   "files": [
     "src",
     "lib",
@@ -14,6 +18,7 @@
     "ios",
     "cpp",
     "*.podspec",
+    "react-native.config.js",
     "!lib/typescript/example",
     "!ios/build",
     "!android/build",

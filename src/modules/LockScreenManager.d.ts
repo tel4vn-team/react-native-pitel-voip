@@ -39,6 +39,12 @@ declare class LockScreenManager {
    * @returns true if module is available
    */
   isAvailable(): boolean;
+
+  /**
+   * Debug helper - prints module status and setup instructions
+   * Useful for troubleshooting setup issues
+   */
+  debugSetup(): void;
 }
 
 declare const lockScreenManager: LockScreenManager;

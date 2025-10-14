@@ -24,10 +24,37 @@ import com.reactnativepitelvoip.PitelVoipPackage;
 protected List<ReactPackage> getPackages() {
     @SuppressWarnings("UnnecessaryLocalVariable")
     List<ReactPackage> packages = new PackageList(this).getPackages();
-    // Add this line
+    // Add this line for lock screen bypass functionality
     packages.add(new PitelVoipPackage());
     return packages;
 }
+```
+
+### 2. Add to settings.gradle
+
+In your app's `android/settings.gradle`, add:
+
+```gradle
+include ':react-native-pitel-voip'
+project(':react-native-pitel-voip').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-pitel-voip/android')
+```
+
+### 3. Add to app/build.gradle
+
+In your app's `android/app/build.gradle`, add to dependencies:
+
+```gradle
+dependencies {
+    implementation project(':react-native-pitel-voip')
+    // ...existing dependencies
+}
+```
+
+### 4. Clean and Rebuild
+
+```bash
+cd android && ./gradlew clean && cd ..
+npx react-native run-android
 ```
 
 ### 2. Android Permissions

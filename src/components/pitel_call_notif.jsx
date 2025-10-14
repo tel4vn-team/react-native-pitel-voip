@@ -121,6 +121,15 @@ export const PitelCallNotif = ({
 
   const handleIncomingCallAndroid = async () => {
     try {
+      // Check if LockScreenManager is available
+      if (!LockScreenManager.isAvailable()) {
+        console.warn(
+          '[PitelCallNotif] LockScreenManager not available, using fallback'
+        );
+        acceptCallAndroid();
+        return;
+      }
+
       // Check if device is locked
       const isLocked = await LockScreenManager.isDeviceLocked();
       console.log('[PitelCallNotif] Device is locked:', isLocked);
