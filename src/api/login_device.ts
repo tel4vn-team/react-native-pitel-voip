@@ -1,4 +1,4 @@
-const ENDPOINT = 'https://push.tel4vn.com/v1';
+const ENDPOINT = 'https://api.pitel-pusher.tel4vn.com/v1';
 const CODE = 'Pitel@@2023!Mobile!PitelConnect';
 
 export const getIceServer = async (): Promise<any> => {
