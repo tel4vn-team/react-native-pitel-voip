@@ -32,6 +32,8 @@ import AirPlayManager from './modules/AirPlayManager';
 import LockScreenManager from './modules/LockScreenManager';
 import { AirPlayButton } from './components/airplay_button';
 
+import { requestNotificationPermission } from './utils/notification_helper';
+
 export {
   Counter,
   PitelCallOut,
@@ -62,4 +64,5 @@ export {
   LockScreenManager,
 
   // Utils
+  requestNotificationPermission,
 };
