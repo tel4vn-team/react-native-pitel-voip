@@ -134,7 +134,7 @@ Using FCM (Firebase Cloud Message) to handle push notification wake up app when 
 # Installation (your project)
 
 - IOS: Replace your file ios/${YOUR_PROJECT_NAME}/AppDelegate.mm with
-  [AppDelegate](https://github.com/tel4vn-team/rn-pitel-demo/blob/main/ios/rn_pitel_demo/AppDelegate.mm)
+  [AppDelegate](https://github.com/anhquangmobile/react-native-pitel-sample/blob/main/ios/AppDelegate.mm)
 
 ## How to test
 
@@ -190,8 +190,7 @@ curl --location 'https://fcm.googleapis.com/v1/projects/${project_id}/messages:s
         "data": {
             "uuid": "77712f3-9b56-4e26-96ea-382ea1206477",
             "nameCaller": "Anh Quang",
-            "avatar": "Anh Quang",
-            "phoneNumber": "0375624006",
+            "phoneNumber": "101",
             "appName": "Pitel Connnect",
             "callType": "CALL"
 

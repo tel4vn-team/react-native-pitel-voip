@@ -62,7 +62,7 @@ pod install
   </style>
 ```
 
-- In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/android/app/src/main/AndroidManifest.xml)
+- In file `android/app/src/main/AndroidManifest.xml`. [Example](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/android/app/src/main/AndroidManifest.xml)
 
 ```xml
  <manifest...>
@@ -70,12 +70,12 @@ pod install
     <!--Request permission-->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PERMISSIONS.ANDROID.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
@@ -83,7 +83,7 @@ pod install
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <!--Android 14+-->
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" />
 
@@ -256,11 +256,11 @@ open ios/<YourProjectName>.xcworkspace
 
 ## Example
 
-Checkout repo github to get [example](https://github.com/tel4vn-team/react-native-pitel-demo). Please run the example to understand the process before integrating the package into your application.
+Checkout repo github to get [example](https://github.com/tel4vn-team/react-native-pitel-sample). Please run the example to understand the process before integrating the package into your application.
 
 ## Usage
 
-- In file [index.js](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/index.js)
+- In file [index.js](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/index.js)
 
 ```js
 import { NotificationBackground } from 'react-native-pitel-voip'; // Add this line
@@ -288,7 +288,7 @@ NotificationBackground(options); // Add this line
 AppRegistry.registerComponent(appName, () => App);
 ```
 
-- In file [App.jsx](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/App.jsx)
+- In file [App.jsx](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/App.jsx)
 
 ```js
 // Import this
@@ -308,7 +308,7 @@ export default function App() {
 ```
 
 - In file `src/screens/home_screen/index.js`
-  Please follow [example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/src/screens/home_screen/index.js)
+  Please follow [example](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/src/screens/home_screen/index.js)
 
 > Config sdkOption
 
@@ -389,7 +389,7 @@ return (
 | setSdkOptions  | set sdkOption when your extension login success | Function | Required |
 
 - In file `src/screens/home_screen/home_screen.js`
-  [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/src/screens/home_screen/home_screen.js)
+  [Example](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/src/screens/home_screen/home_screen.js)
 
 > **Note**
 >
@@ -452,7 +452,7 @@ return (
 | onHangup     | set hang up                                      | () => void | Required |
 | onIOSToken   | ios voip push notification                       | String     | Required |
 
-- In file `src/screens/call_screen/index.js` [Example](https://github.com/tel4vn-team/react-native-pitel-demo/blob/main/src/screens/call_screen/index.js)
+- In file `src/screens/call_screen/index.js` [Example](https://github.com/tel4vn-team/react-native-pitel-sample/blob/main/src/screens/call_screen/index.js)
 
 ```js
 import React, { useState, useContext } from 'react';
