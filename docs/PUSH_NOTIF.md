@@ -1,7 +1,9 @@
 # Pitel Voip Push notification
 
 > **Warning**
-> IOS only working on real device, not on simulator (Callkit framework not working on simulator)
+>
+> - IOS only working on real device, not on simulator (Callkit framework not working on simulator)
+> - Please renew voip push notification certificate (iOS) once a year on Apple Developer and upload the certificate file to the [portal sdk](https://portal-sdk.tel4vn.com/).
 
 ## Pitel Flow
 
@@ -189,7 +191,7 @@ curl --location 'https://fcm.googleapis.com/v1/projects/${project_id}/messages:s
         },
         "data": {
             "uuid": "77712f3-9b56-4e26-96ea-382ea1206477",
-            "nameCaller": "Anh Quang",
+            "nameCaller": "Pitel SDK",
             "phoneNumber": "101",
             "appName": "Pitel Connnect",
             "callType": "CALL"
