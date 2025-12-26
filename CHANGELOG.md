@@ -2,6 +2,17 @@
 
 Minor version updates before v1.0.0 can include breaking changes, which will always be listed here.
 
+## 1.1.5 - 2025-05-22
+
+### Changed
+
+- Removed encode/decode display name functions, deleted `display_name_helper.js` file.
+- Simplified display name logic, no more encoding/decoding.
+- Removed dependencies: `react-native-base64`, `utf8`.
+- Updated display name handling in `PitelSDK` and `PitelCallKit` components.
+- Bumped package version to 1.1.5.
+- Updated README documentation and removed old display name instructions.
+
 ## 1.1.4 - 2024-10-14
 
 ### New Features

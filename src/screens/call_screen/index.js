@@ -13,12 +13,8 @@ let RNCallKeep;
 if (Platform.OS === 'ios') {
   RNCallKeep = require('react-native-callkeep').default;
 }
-import { btoa, atob } from 'react-native-quick-base64';
-import base64 from 'react-native-base64';
-import utf8 from 'utf8';
 import styles from './styles';
 
-import { decodeDisplayName } from '../../utils/display_name_helper';
 import { IconTextButton } from '../../components/icon_text_button';
 import { IconButton } from '../../components/icon_button';
 
@@ -72,11 +68,6 @@ export const PitelCallKit = ({
     }
   };
 
-  const nameCaller = decodeDisplayName({
-    displayNameRaw: displayName,
-    phoneNumber: phoneNumber,
-  });
-
   return (
     <View style={styles.container}>
       <AudioModal
@@ -89,7 +80,7 @@ export const PitelCallKit = ({
         <Text style={styles.txtDirection}>{direction}...</Text>
         <View style={styles.callInfoContainer}>
           <Text style={styles.txtPhoneNumber}>
-            {nameCaller != '' ? nameCaller : phoneNumber}
+            {displayName != '' ? displayName : phoneNumber}
           </Text>
           <Clock textClock={textClock} />
         </View>
